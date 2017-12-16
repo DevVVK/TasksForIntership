@@ -73,11 +73,13 @@
     <Compile Include="MapBuilders\MapUserDto.cs" />
     <Compile Include="MapBuilders\MapUserProfile.cs" />
     <Compile Include="MapBuilders\MapUserProfileDto.cs" />
+    <Compile Include="MapBuilders\UnitOfWork\UnitOfWorkMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Interfaces\IUsersService.cs" />
+    <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Infrastructure\" />
-    <Folder Include="Services\" />
+    <Folder Include="BusinessLogic\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -8,6 +8,10 @@ namespace Users.BLL.MapBuilders
 {
     public class MapUserProfile : IMapBuilder<UserProfile, UserProfileDto>
     {
+        private readonly MapUser _mapperUser = new MapUser();
+
+        private readonly MapPicture _mapperPicture = new MapPicture();
+
         private DateConverter _dateConverter;
 
         public UserProfile GetMapOne(UserProfileDto source)
@@ -16,11 +20,14 @@ namespace Users.BLL.MapBuilders
 
             var userProfile = new UserProfile
             {
+                Id = source.Id,
                 FirstName = source.FirstName,
                 LastName = source.LastName,
                 Gender = source.Gender,
 
-                DateBirth = _dateConverter.DateTime
+                DateBirth = _dateConverter.DateTime,
+                User = _mapperUser.GetMapOne(source.User),
+                Picture = _mapperPicture.GetMapOne(source.Picture)
             };
 
             return userProfile;

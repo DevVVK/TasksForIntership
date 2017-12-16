@@ -7,13 +7,18 @@ namespace Users.BLL.MapBuilders
 {
     public class MapUser : IMapBuilder<User, UserDto>
     {
+        private readonly MapUserProfile _mapper = new MapUserProfile();
+
         public User GetMapOne(UserDto source)
         {
             var user = new User
             {
+                Id = source.Id,
                 Login = source.Login,
                 Password = source.Password,
-                Salt = source.Salt
+                Salt = source.Salt,
+
+                Profile = _mapper.GetMapOne(source.Profile)
             };
 
             return user;

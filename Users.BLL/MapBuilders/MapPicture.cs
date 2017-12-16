@@ -7,11 +7,16 @@ namespace Users.BLL.MapBuilders
 {
     public class MapPicture : IMapBuilder<Picture, PictureDto>
     {
+        private readonly MapUserProfile _mapper = new MapUserProfile();
+
         public Picture GetMapOne(PictureDto source)
         {
             var picture = new Picture
             {
+                Id = source.Id,
                 NamePicture = source.PictureName,
+
+                Profile =  _mapper.GetMapOne(source.Profile)
             };
 
             return picture;

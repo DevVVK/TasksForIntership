@@ -8,7 +8,7 @@
         Title="Доступ к аккаунту" Height="147.333" Width="400" MinHeight="200" 
                                   MaxHeight="230" MinWidth="320" MaxWidth="400">
     <Grid Style="{StaticResource StyleGrid}">
-
+        
         <Border Style="{StaticResource StyleBorder}">
 
             <StackPanel x:Name="SpLogon"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="100" Width="300">

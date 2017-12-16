@@ -17,6 +17,7 @@ namespace UsersDAL.Repositories.UnitOfWorks
 
         public UserProfileRepository Profiles => _userProfileRepository ?? (_userProfileRepository = new UserProfileRepository());
 
+        
         public void Dispose()
         {
             _pictureRepository?.Dispose();

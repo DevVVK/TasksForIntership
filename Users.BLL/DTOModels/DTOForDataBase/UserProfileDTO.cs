@@ -1,7 +1,4 @@
-﻿using System;
-using UsersDAL.Entities;
-
-namespace Users.BLL.DTOModels.DTOForDataBase
+﻿namespace Users.BLL.DTOModels.DTOForDataBase
 {
     public class UserProfileDto
     {
@@ -18,5 +15,9 @@ namespace Users.BLL.DTOModels.DTOForDataBase
         public int Day { get; set; }
 
         public string Gender { get; set; }
+
+        public PictureDto Picture { get; set; }
+
+        public UserDto User { get; set; }
     }
 }

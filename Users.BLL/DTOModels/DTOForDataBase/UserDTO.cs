@@ -4,6 +4,8 @@
     {
         public int Id { get; set; }
 
+        public UserProfileDto Profile { get; set; }
+
         public string Login { get; set; }
 
         public string Password { get; set; }

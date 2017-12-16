@@ -9,6 +9,10 @@ namespace Users.BLL.MapBuilders
 {
     public class MapUserProfileDto : IMapBuilder<UserProfileDto, UserProfile>
     {
+        private readonly MapUserDto _mapperUserDto = new MapUserDto();
+
+        private readonly MapPictureDto _mapperPictureDto = new MapPictureDto();
+
         private DateFormConverter _dateConverter;
 
         public UserProfileDto GetMapOne(UserProfile source)
@@ -24,7 +28,10 @@ namespace Users.BLL.MapBuilders
 
                 Day = _dateConverter.Form.Day,
                 Month = _dateConverter.Form.Month,
-                Year = _dateConverter.Form.Year
+                Year = _dateConverter.Form.Year,
+                
+                User = _mapperUserDto.GetMapOne(source.User),
+                Picture = _mapperPictureDto.GetMapOne(source.Picture)
             };
 
             return userProfileDto;
