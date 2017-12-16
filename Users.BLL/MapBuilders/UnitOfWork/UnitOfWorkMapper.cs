@@ -25,6 +25,6 @@
 
         public MapUserProfile MapUserProfile => _mapUserProfile ?? (_mapUserProfile = new MapUserProfile());
 
-        public MapUserProfileDto MapUsepProfileDto => _mapUserProfileDto ?? (_mapUserProfileDto = new MapUserProfileDto());
+        public MapUserProfileDto MapUserProfileDto => _mapUserProfileDto ?? (_mapUserProfileDto = new MapUserProfileDto());
     }
 }

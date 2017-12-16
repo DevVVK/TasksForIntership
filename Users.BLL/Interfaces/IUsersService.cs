@@ -16,7 +16,7 @@ namespace Users.BLL.Interfaces
         void DeleteUser(UserDto user);
 
         
-        UserProfileDto GetUserOne(int id);
+        UserProfileDto GetUserProfileOne(int id);
 
         IEnumerable<UserProfileDto> GetAllUserProfiles();
 
@@ -32,5 +32,7 @@ namespace Users.BLL.Interfaces
         void UpdatePicture(PictureDto pictureDto);
 
         void DeletePicture(PictureDto pictureDto);
+
+        void Dispose();
     }
 }

@@ -82,6 +82,7 @@
     <Compile Include="MapBuilders\MapUserDto.cs" />
     <Compile Include="MapBuilders\MapUserProfileContract.cs" />
     <Compile Include="MapBuilders\MapUserProfileDto.cs" />
+    <Compile Include="MapBuilders\UnitOfWorkMapper\UnitOfWorkClientMapper.cs" />
     <Compile Include="ViewModels\ImageVm.cs" />
     <Compile Include="ViewModels\InformationUserVM.cs" />
     <Compile Include="ViewModels\LogonVM.cs" />
