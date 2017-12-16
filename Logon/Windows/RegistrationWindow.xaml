@@ -1,0 +1,97 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Logon"
+        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="Logon.RegistrationWindow"
+        mc:Ignorable="d"
+        Title="Регистрация нового пользователя" Height="210.5" Width="580" MinHeight="270" MaxHeight="218" MaxWidth="600" MinWidth="600">
+
+    <Grid Style="{StaticResource StyleGrid}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="87"/>
+            <ColumnDefinition Width="215*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Style="{StaticResource StyleBorder}">
+
+            <StackPanel Grid.Column="0" Margin="2" OpacityMask="Black">
+                <Border Style="{StaticResource StyleBorder}">
+                    <Image Width="130" Height="130" Margin="2"/>
+                </Border>
+                <Button Content="Добавить фото" Margin="0,2" HorizontalAlignment="Center" Style="{StaticResource StyleButton}" Width="136" Height="24"/>
+            </StackPanel>
+
+        </Border>
+
+        <StackPanel Grid.Column="1" Margin="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" Content="Ваше имя" Style="{StaticResource StyleLabel}"/>
+                <TextBox Grid.Column="1" Grid.Row="0"/>
+                
+                <Label Grid.Column="0" Grid.Row="1" Content="Ваша фамилия" Style="{StaticResource StyleLabel}"/>
+                <TextBox Grid.Column="1" Grid.Row="1"/>
+                
+                <Label Grid.Column="0" Grid.Row="2" Content="Дата рождения" Style="{StaticResource StyleLabel}"/>
+                <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Width="347">
+                    <Label Content="Год" Style="{StaticResource StyleLabel}"/>
+                    <ComboBox x:Name="YearBox" ItemsSource="{Binding Path=YearList}" Height="{Binding Height, ElementName=CbSex}" Margin="0,3" Width="80" SelectionChanged="ComboBox_SelectionChanged_1"/>
+                    <Label Content="Месяц" Style="{StaticResource StyleLabel}"/>
+                    <ComboBox Height="{Binding ElementName=CbSex, Path=Height}" Margin="0,3" Width="90"/>
+                    <Label Content="День" Style="{StaticResource StyleLabel}"/>
+                    <ComboBox Height="{Binding ElementName=CbSex, Path=Height}" Margin="0,3" Width="62"/>
+                </StackPanel>
+
+                <Label Grid.Column="0" Grid.Row="3" Content="Пол" Style="{StaticResource StyleLabel}"/>
+                <ComboBox x:Name="CbSex" Grid.Column="1" Grid.Row="3" Height="18" Width="60" VerticalAlignment="Center" Margin="4,3,0,3" HorizontalAlignment="Left">
+                    <Label Style="{StaticResource ResourceKey=StyleLabel}" Content="муж"/>
+                    <Label Style="{StaticResource ResourceKey=StyleLabel}" Content="жен"/>
+                </ComboBox>
+
+            </Grid>
+
+            <Separator Style="{DynamicResource StyleSeparator}"/>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" Content="Логин" Style="{StaticResource StyleLabel}"/>
+                <TextBox Grid.Column="1" Grid.Row="0"/>
+                <Label Grid.Column="0" Grid.Row="1" Content="Пароль" Style="{StaticResource StyleLabel}"/>
+                <PasswordBox Grid.Column="1" Grid.Row="1"/>
+                <Label Grid.Column="0" Grid.Row="2" Content="Подтверждение пароля" Style="{StaticResource StyleLabel}"/>
+                <PasswordBox Grid.Column="1" Grid.Row="2"/>
+            </Grid>
+
+            <Separator Style="{DynamicResource ResourceKey=StyleSeparator}"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="BtnRegistration" Content="Зарегистрироваться" Margin="2" Style="{StaticResource StyleButton}" Height="24" Width="137"/>
+                <Button x:Name="BtnClose" Content="Отмена" Margin="2" Style="{StaticResource StyleButton}" Width="75" Click="BtnClose_Click" />
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,57 @@
+﻿<Window x:Class="Logon.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Logon"
+        mc:Ignorable="d"
+        Title="Logon" Height="698" Width="1102.783"
+        WindowStartupLocation = "CenterScreen" Background="#FFBFB3B3">
+
+    <Window.Resources>
+    </Window.Resources>
+
+    <Grid Background="#FF2F3238">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="151"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" 
+                    Background="#FF2F3238" 
+                    HorizontalAlignment="Left" 
+                    Width="146" 
+                    Margin="5,5,0,5">
+
+            <Label x:Name="LblLogo" 
+                       Content="Logon" 
+                       FontSize="20" 
+                       FontFamily="Showcard Gothic"
+                       FontWeight="Bold"
+                       Foreground="#FF729CC1" 
+                       HorizontalAlignment="Center" Background="{x:Null}" Width="146.049"/>
+            <Button x:Name="BtnCreateAccount" 
+                        Height="30"
+                        Content="Добавить пользователя"
+                        Style="{StaticResource ResourceKey=StyleButton}" Click="BtnCreateAccount_Click"/>
+
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Margin="5,5,10,5" Background="White">
+            <StackPanel.Effect>
+                <DropShadowEffect />
+            </StackPanel.Effect>
+            <Grid>
+                <ListBox x:Name="UserList" ItemTemplate="{StaticResource ListTamlate}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </Grid>
+        </StackPanel>
+    </Grid>
+
+</Window>

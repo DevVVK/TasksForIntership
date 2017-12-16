@@ -1,0 +1,83 @@
+﻿<Window x:Class="Logon.UpdateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Logon"
+        mc:Ignorable="d"
+        Title="Информация о пользователе" Height="293.432" Width="562.612">
+    <Grid Style="{StaticResource StyleGrid}">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Style="{StaticResource StyleBorder}">
+            <StackPanel Grid.Column="0">
+                <Border Style="{StaticResource StyleBorder}"  Margin="2">
+                    <Image Width="150" Height="150"/>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Column="1">
+            <Label Content="Основная информация" Style="{StaticResource StyleLabel}"/>
+            <Separator Style="{StaticResource StyleSeparator}"/>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" Content="Имя" Style="{StaticResource StyleLabelInformation}"/>
+                <Label Grid.Column="1" Grid.Row="0" Content="Имя" Style="{StaticResource StyleLabelInformation}"/>
+                <Label Grid.Column="0" Grid.Row="1" Content="Фамилия" Style="{StaticResource StyleLabelInformation}"/>
+                <Label Grid.Column="1" Grid.Row="1" Content="Фамилия" Style="{StaticResource StyleLabelInformation}"/>
+                <Label Grid.Column="0" Grid.Row="2" Content="Дата рождения" Style="{StaticResource StyleLabelInformation}"/>
+                <Label Grid.Column="1" Grid.Row="2" Content="Дата рождения" Style="{StaticResource StyleLabelInformation}"/>
+                <Label Grid.Column="0" Grid.Row="3" Content="Пол" Style="{StaticResource StyleLabelInformation}"/>
+                <Label Grid.Column="1" Grid.Row="3" Content="Пол" Style="{StaticResource StyleLabelInformation}"/>
+            </Grid>
+
+            <Separator Style="{StaticResource StyleSeparator}"/>
+
+            <Label Content="Информация о доступе к аккаунту" Style="{StaticResource StyleLabel}"/>
+
+            <Separator Style="{StaticResource StyleSeparator}"/>
+
+            <Grid Style="{StaticResource StyleGrid}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" Content="Логин" Style="{StaticResource StyleLabelInformation}"/>
+                <Label Grid.Column="1" Grid.Row="0" Content="Логин" Style="{StaticResource StyleLabelInformation}"/>
+
+            </Grid>
+
+            <Separator Style="{StaticResource StyleSeparator}"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Редактировать" Height="24" Margin="2" Style="{StaticResource StyleButton}" Width="99"/>
+                <Button Content="Выход" Height="24" Margin="2" Style="{StaticResource StyleButton}" Width="57" Click="Button_Click"/>
+            </StackPanel>
+
+        </StackPanel>
+
+    </Grid>
+</Window>
