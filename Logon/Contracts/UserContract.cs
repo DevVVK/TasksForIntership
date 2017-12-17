@@ -9,5 +9,7 @@ namespace Logon.Contracts
         public string Login { get; set; }
 
         public string Password { get; set; }
+
+        public UserProfileContract Profile { get; set; }
     }
 }

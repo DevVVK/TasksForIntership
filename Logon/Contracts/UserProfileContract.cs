@@ -17,5 +17,9 @@ namespace Logon.Contracts
         public int Day { get; set; }
 
         public string Gender { get; set; }
+
+        public PictureContract Picture { get; set; }
+
+        public UserContract User { get; set; }
     }
 }

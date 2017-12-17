@@ -7,12 +7,17 @@ namespace Logon.MapBuilders
 {
     public class MapUserDto : IMapBuilder<UserDto, UserContract>
     {
+        private readonly MapUserProfileDto _mapperUserProfileDto = new MapUserProfileDto();
+
         public UserDto GetMapOne(UserContract source)
         {
             var userDto = new UserDto
             {
+                Id = source.Id,
                 Login = source.Login,
-                Password = source.Password
+                Password = source.Password,
+
+                Profile = _mapperUserProfileDto.GetMapOne(source.Profile)
             };
 
             return userDto;

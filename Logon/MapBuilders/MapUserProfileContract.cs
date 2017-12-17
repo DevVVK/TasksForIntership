@@ -7,16 +7,24 @@ namespace Logon.MapBuilders
 {
     public class MapUserProfileContract : IMapBuilder<UserProfileContract, UserProfileDto>
     {
+        private readonly MapPictureContract _mapperPictureContract = new MapPictureContract();
+
+        private readonly MapUserContract _mapperUserContract = new MapUserContract();
+
         public UserProfileContract GetMapOne(UserProfileDto source)
         {
             var userProfile = new UserProfileContract
             {
+                Id = source.Id,
                 FirstName = source.FirstName,
                 LastName = source.LastName,
                 Year = source.Year,
                 Month = source.Month,
                 Day = source.Day,
-                Gender = source.Gender
+                Gender = source.Gender,
+
+                User = _mapperUserContract.GetMapOne(source.User),
+                Picture = _mapperPictureContract.GetMapOne(source.Picture)
             };
 
             return userProfile;
