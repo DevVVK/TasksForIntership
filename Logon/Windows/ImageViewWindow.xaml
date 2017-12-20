@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Logon.Windows"
         mc:Ignorable="d"
-        Title="Просмотр фото" Height="247" Width="403">
+        Title="Просмотр фото" Height="239.5" Width="434">
 
     <Grid Style="{StaticResource StyleGrid}">
 

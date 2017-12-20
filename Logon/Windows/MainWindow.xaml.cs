@@ -26,16 +26,5 @@ namespace Logon
             InitializeComponent();
             DataContext = new MainVm();
         }
-
-        private void BtnCreateAccount_Click(object sender, RoutedEventArgs e)
-        {
-            var registrationForm = new RegistrationWindow
-            {
-                Owner = this,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen
-            };
-
-            registrationForm.ShowDialog();
-        }
     }
 }

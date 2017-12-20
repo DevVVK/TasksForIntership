@@ -1,34 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using AutoMapper;
-using Users.BLL.DTOModels.DTOForDataBase;
-using UsersDAL.Entities;
-using UsersDAL.Repositories.UnitOfWorks;
+using Logon.Commands.BaseCommand;
+using Logon.Contracts;
+using Logon.MapBuilders;
+using Logon.ViewModels.Commands;
+using Users.BLL.Services;
 
 namespace Logon.ViewModels
 {
     public class MainVm
     {
-        private readonly ObservableCollection<UserProfileDto> _userDataProfiles;
+        public readonly IList<UserContract> UserDataProfiles;
+
+        private readonly MapUserContract _mapperUserContract = new MapUserContract();
         
         public MainVm()
         {
-            _userDataProfiles = new ObservableCollection<UserProfileDto>(GetAllUsers());
-        }
-
-        public IEnumerable<UserProfileDto> GetAllUsers()
-        {
-            using (var dataBase = new UnitOfWork())
+            using (var userService = new UserService())
             {
-                Mapper.Initialize(config => config.CreateMap<UserProfile, UserProfileDto>());
-
-                return Mapper.Map<IEnumerable<UserProfile>, List<UserProfileDto>>(dataBase.Profiles.GetAll());
+                UserDataProfiles = new ObservableCollection<UserContract>(_mapperUserContract.GetMapList(userService.GetAllUsers()));
             }
         }
 
-        public ObservableCollection<UserProfileDto> GetDataProfiles()
-        {
-            return _userDataProfiles;
-        }
+        private readonly BaseCommand _getRigstrationViewCommand = null;
+
+        public BaseCommand GetReginstrationViewCommand => _getRigstrationViewCommand ?? new GetRegistrationViewCommand(UserDataProfiles);
     }
 }

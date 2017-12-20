@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Logon.Contracts.Validation
 {
-    public class BaseValidation : INotifyPropertyChanged, IDataErrorInfo, INotifyDataErrorInfo
+    public class BaseValidationContract : INotifyPropertyChanged, IDataErrorInfo, INotifyDataErrorInfo
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Users.BLL.BusinessModels.Security;
 using Users.BLL.DTOModels.DTOForDataBase;
 using Users.BLL.Interfaces;
@@ -7,7 +8,7 @@ using UsersDAL.Repositories.UnitOfWorks;
 
 namespace Users.BLL.Services
 {
-    public class UserService : IUsersService
+    public class UserService : IUsersService, IDisposable
     {
         private readonly UnitOfWork _dataBase;
 
@@ -32,15 +33,9 @@ namespace Users.BLL.Services
             addUser.Salt = hashPasswordAndSalt.Salt;
 
             _dataBase.Users.Add(addUser);
-
-            if (addUser.Profile != null)
-                _dataBase.Profiles.Add(addUser.Profile);
-
-            if (addUser.Profile.Picture != null)
-                _dataBase.Pictures.Add(addUser.Profile.Picture);
         }
 
-        public IEnumerable<UserDto> GetAllUsers()
+        public List<UserDto> GetAllUsers()
         {
             var users = _dataBase.Users.GetAll();
 
@@ -65,81 +60,10 @@ namespace Users.BLL.Services
         {
             var deleteUser = _mapper.MapUser.GetMapOne(user);
 
-            if (deleteUser.Profile != null)
-            {
-                if (deleteUser.Profile.Picture != null)
-                    _dataBase.Pictures.Delete(deleteUser.Profile.Picture);
-
-                _dataBase.Profiles.Delete(deleteUser.Profile);
-            }
-
             _dataBase.Users.Delete(deleteUser);
         }
 
         #endregion
-
-#region CRUD Profile
-
-        public UserProfileDto GetUserProfileOne(int id)
-        {
-            var profile = _dataBase.Profiles.GetOne(id);
-
-            return _mapper.MapUserProfileDto.GetMapOne(profile);
-        }
-
-        public IEnumerable<UserProfileDto> GetAllUserProfiles()
-        {
-            var userProfiles = _dataBase.Profiles.GetAll();
-
-            return _mapper.MapUserProfileDto.GetMapList(userProfiles);
-        }
-
-        public void UpdateUserProfile(UserProfileDto userProfileDto)
-        {
-            var updateUserProfile = _mapper.MapUserProfile.GetMapOne(userProfileDto);
-
-            _dataBase.Profiles.Update(updateUserProfile);
-        }
-
-        public void DeleteUserProfile(UserProfileDto userProfileDto)
-        {
-            var deleteUserProfile = _mapper.MapUserProfile.GetMapOne(userProfileDto);
-
-            if (deleteUserProfile.Picture != null)
-                _dataBase.Pictures.Delete(deleteUserProfile.Picture);
-
-            _dataBase.Profiles.Delete(deleteUserProfile);
-        }
-
-        #endregion
-
-        public PictureDto GetPicture(int id)
-        {
-            var picture = _dataBase.Pictures.GetOne(id);
-
-            return _mapper.MapPictureDto.GetMapOne(picture);
-        }
-
-        public IEnumerable<PictureDto> GetAllPictures()
-        {
-            var pictures = _dataBase.Pictures.GetAll();
-
-            return _mapper.MapPictureDto.GetMapList(pictures);
-        }
-
-        public void UpdatePicture(PictureDto pictureDto)
-        {
-            var updatePicture = _mapper.MapPicture.GetMapOne(pictureDto);
-
-            _dataBase.Pictures.Update(updatePicture);
-        }
-
-        public void DeletePicture(PictureDto pictureDto)
-        {
-            var deletePicture = _mapper.MapPicture.GetMapOne(pictureDto);
-
-            _dataBase.Pictures.Delete(deletePicture);
-        }
 
         public void Dispose()
         {

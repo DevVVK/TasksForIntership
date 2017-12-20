@@ -27,6 +27,7 @@
 
         <StackPanel Grid.Column="1" Margin="2">
             <Grid>
+                
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -40,23 +41,23 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Grid.Column="0" Grid.Row="0" Content="Ваше имя" Style="{StaticResource StyleLabel}"/>
-                <TextBox Grid.Column="1" Grid.Row="0"/>
+                <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Path=FirstName}"/>
                 
                 <Label Grid.Column="0" Grid.Row="1" Content="Ваша фамилия" Style="{StaticResource StyleLabel}"/>
-                <TextBox Grid.Column="1" Grid.Row="1"/>
+                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=LastName}"/>
                 
                 <Label Grid.Column="0" Grid.Row="2" Content="Дата рождения" Style="{StaticResource StyleLabel}"/>
                 <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Width="347">
                     <Label Content="Год" Style="{StaticResource StyleLabel}"/>
-                    <ComboBox x:Name="YearBox" ItemsSource="{Binding Path=YearList}" Height="{Binding Height, ElementName=CbSex}" Margin="0,3" Width="80" SelectionChanged="ComboBox_SelectionChanged_1"/>
+                    <ComboBox x:Name="YearBox" ItemsSource="{Binding Path=YearList}" Height="{Binding Height, ElementName=CbSex}" Margin="0,3" Width="80" SelectionChanged="ComboBox_SelectionChanged_1" Foreground="{DynamicResource ColorText}"/>
                     <Label Content="Месяц" Style="{StaticResource StyleLabel}"/>
-                    <ComboBox Height="{Binding ElementName=CbSex, Path=Height}" Margin="0,3" Width="90"/>
+                    <ComboBox Height="{Binding ElementName=CbSex, Path=Height}" Margin="0,3" Width="84" Foreground="{DynamicResource ColorText}"/>
                     <Label Content="День" Style="{StaticResource StyleLabel}"/>
-                    <ComboBox Height="{Binding ElementName=CbSex, Path=Height}" Margin="0,3" Width="62"/>
+                    <ComboBox Height="{Binding ElementName=CbSex, Path=Height}" Margin="0,3" Width="62" Foreground="{DynamicResource ColorText}"/>
                 </StackPanel>
 
                 <Label Grid.Column="0" Grid.Row="3" Content="Пол" Style="{StaticResource StyleLabel}"/>
-                <ComboBox x:Name="CbSex" Grid.Column="1" Grid.Row="3" Height="18" Width="60" VerticalAlignment="Center" Margin="4,3,0,3" HorizontalAlignment="Left">
+                <ComboBox x:Name="CbSex" Grid.Column="1" Grid.Row="3" Height="18" Width="60" VerticalAlignment="Center" Margin="4,3,0,3" HorizontalAlignment="Left" Foreground="{DynamicResource ColorText}">
                     <Label Style="{StaticResource ResourceKey=StyleLabel}" Content="муж"/>
                     <Label Style="{StaticResource ResourceKey=StyleLabel}" Content="жен"/>
                 </ComboBox>
@@ -65,7 +66,7 @@
 
             <Separator Style="{DynamicResource StyleSeparator}"/>
 
-            <Grid>
+            <Grid DataContext="{Binding Path=User}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -78,17 +79,17 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Grid.Column="0" Grid.Row="0" Content="Логин" Style="{StaticResource StyleLabel}"/>
-                <TextBox Grid.Column="1" Grid.Row="0"/>
+                <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Path=Login}"/>
                 <Label Grid.Column="0" Grid.Row="1" Content="Пароль" Style="{StaticResource StyleLabel}"/>
-                <PasswordBox Grid.Column="1" Grid.Row="1"/>
+                <PasswordBox Grid.Column="1" Grid.Row="1"  />
                 <Label Grid.Column="0" Grid.Row="2" Content="Подтверждение пароля" Style="{StaticResource StyleLabel}"/>
-                <PasswordBox Grid.Column="1" Grid.Row="2"/>
+                <PasswordBox Grid.Column="1" Grid.Row="2" />
             </Grid>
 
             <Separator Style="{DynamicResource ResourceKey=StyleSeparator}"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="BtnRegistration" Content="Зарегистрироваться" Margin="2" Style="{StaticResource StyleButton}" Height="24" Width="137"/>
+                <Button x:Name="BtnRegistration" Content="Зарегистрироваться" Margin="2" Style="{StaticResource StyleButton}" Command="{Binding AddUserCommand}" Height="24" Width="137"/>
                 <Button x:Name="BtnClose" Content="Отмена" Margin="2" Style="{StaticResource StyleButton}" Width="75" Click="BtnClose_Click" />
             </StackPanel>
 

@@ -34,7 +34,7 @@
             <Button x:Name="BtnCreateAccount" 
                         Height="30"
                         Content="Добавить пользователя"
-                        Style="{StaticResource ResourceKey=StyleButton}" Click="BtnCreateAccount_Click"/>
+                        Style="{StaticResource ResourceKey=StyleButton}" Command="{Binding GetReginstrationViewCommand}"/>
 
         </StackPanel>
 

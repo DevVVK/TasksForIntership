@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UsersDAL.Entities
@@ -9,9 +10,6 @@ namespace UsersDAL.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
-        public UserProfile Profile { get; set; }
-
         [StringLength(50)]
         public string Login { get; set; }
 
@@ -20,5 +18,23 @@ namespace UsersDAL.Entities
 
         [StringLength(50)]
         public string Salt { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string FirstName { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string LastName { get; set; }
+
+        [Required]
+        [StringLength(4)]
+        public string Gender { get; set; }
+
+        [Required]
+        public DateTime DateBirth { get; set; }
+
+        [Required]
+        public string NamePicture { get; set; }
     }
 }

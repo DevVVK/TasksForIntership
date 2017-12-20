@@ -7,8 +7,6 @@ namespace Logon.MapBuilders
 {
     public class MapUserContract : IMapBuilder<UserContract, UserDto>
     {
-        private readonly MapUserProfileContract _mapeerUserProfileContract = new MapUserProfileContract();
-
         public UserContract GetMapOne(UserDto source)
         {
             var userContract = new UserContract
@@ -16,8 +14,13 @@ namespace Logon.MapBuilders
                 Id = source.Id,
                 Login = source.Login,
                 Password = source.Password,
-                
-                Profile = _mapeerUserProfileContract.GetMapOne(source.Profile)
+                FirstName = source.FirstName,
+                LastName = source.LastName,
+                Gender = source.Gender,
+                PictureName = source.PictureName,
+                Year = source.Year,
+                Month = source.Month,
+                Day = source.Day,
             };
 
             return userContract;

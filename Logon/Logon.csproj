@@ -43,6 +43,9 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero2" />
+    <Reference Include="PropertyChanged, Version=2.2.4.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyChanged.Fody.2.2.4.0\lib\net452\PropertyChanged.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -65,21 +68,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Commands\AddUserCommand.cs" />
-    <Compile Include="Commands\BaseCommand\BaseCommand.cs" />
-    <Compile Include="Commands\BaseCommand\BaseCommandRelay.cs" />
-    <Compile Include="Commands\GetAccess.cs" />
-    <Compile Include="Contracts\PictureContract.cs" />
+    <Compile Include="ViewModels\Commands\AddUserCommand.cs" />
+    <Compile Include="ViewModels\Commands\BaseCommand\BaseCommand.cs" />
+    <Compile Include="ViewModels\Commands\BaseCommand\BaseCommandRelay.cs" />
+    <Compile Include="ViewModels\Commands\GetAccess.cs" />
     <Compile Include="Contracts\UserContract.cs" />
-    <Compile Include="Contracts\UserProfileContract.cs" />
-    <Compile Include="Contracts\Validation\BaseDtoValidation.cs" />
-    <Compile Include="MapBuilders\MapPictureContract.cs" />
-    <Compile Include="MapBuilders\MapPictureDto.cs" />
+    <Compile Include="Contracts\Validation\BaseValidationContract.cs" />
     <Compile Include="MapBuilders\MapUserContract.cs" />
     <Compile Include="MapBuilders\MapUserDto.cs" />
-    <Compile Include="MapBuilders\MapUserProfileContract.cs" />
-    <Compile Include="MapBuilders\MapUserProfileDto.cs" />
     <Compile Include="MapBuilders\UnitOfWorkMapper\UnitOfWorkClientMapper.cs" />
+    <Compile Include="ViewModels\Commands\GetRegistrationViewCommand.cs" />
     <Compile Include="ViewModels\ImageVm.cs" />
     <Compile Include="ViewModels\InformationUserVM.cs" />
     <Compile Include="ViewModels\LogonVM.cs" />
@@ -165,6 +163,15 @@
       <Name>Users.DAL</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="FodyWeavers.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.2.2.1.0\build\net452\Fody.targets" Condition="Exists('..\packages\Fody.2.2.1.0\build\net452\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.2.2.1.0\build\net452\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.2.2.1.0\build\net452\Fody.targets'))" />
+  </Target>
 </Project>

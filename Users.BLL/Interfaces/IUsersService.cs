@@ -7,31 +7,13 @@ namespace Users.BLL.Interfaces
     {
         void AddUser(UserDto user);
 
-        IEnumerable<UserDto> GetAllUsers();
+        List<UserDto> GetAllUsers();
 
         UserDto GetUserOne(int id);
 
         void UpdateUser(UserDto user);
 
         void DeleteUser(UserDto user);
-
-        
-        UserProfileDto GetUserProfileOne(int id);
-
-        IEnumerable<UserProfileDto> GetAllUserProfiles();
-
-        void UpdateUserProfile(UserProfileDto userProfileDto);
-
-        void DeleteUserProfile(UserProfileDto userProfileDto);
-
-
-        PictureDto GetPicture(int id);
-
-        IEnumerable<PictureDto> GetAllPictures();
-
-        void UpdatePicture(PictureDto pictureDto);
-
-        void DeletePicture(PictureDto pictureDto);
 
         void Dispose();
     }

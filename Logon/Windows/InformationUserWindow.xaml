@@ -74,6 +74,7 @@
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="Редактировать" Height="24" Margin="2" Style="{StaticResource StyleButton}" Width="99"/>
+                <Button Content="Удалить аккаунт" Height="24" Margin="2" Style="{StaticResource StyleButton}" Width="128"/>
                 <Button Content="Выход" Height="24" Margin="2" Style="{StaticResource StyleButton}" Width="57" Click="Button_Click"/>
             </StackPanel>
 
