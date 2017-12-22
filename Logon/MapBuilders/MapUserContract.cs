@@ -18,9 +18,7 @@ namespace Logon.MapBuilders
                 LastName = source.LastName,
                 Gender = source.Gender,
                 PictureName = source.PictureName,
-                Year = source.Year,
-                Month = source.Month,
-                Day = source.Day,
+                DateBirth = source.DateBirth
             };
 
             return userContract;

@@ -9,6 +9,23 @@
         WindowStartupLocation = "CenterScreen" Background="#FFBFB3B3">
 
     <Window.Resources>
+        <DataTemplate x:Key="ListTamlate">
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <Border CornerRadius="100" Style="{StaticResource StyleBorder}">
+                    <Image Width="100" Height="100" Source="{Binding Path = Photo}"/>
+                </Border>
+                <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="{Binding Path = FirstName}" Style="{StaticResource StyleLabel}"/>
+                        <Label Grid.Row="1" Content="{Binding Path = DateBirth}" Style="{StaticResource StyleLabel}"/>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
     </Window.Resources>
 
     <Grid Background="#FF2F3238">
@@ -34,7 +51,7 @@
             <Button x:Name="BtnCreateAccount" 
                         Height="30"
                         Content="Добавить пользователя"
-                        Style="{StaticResource ResourceKey=StyleButton}" Command="{Binding GetReginstrationViewCommand}"/>
+                        Style="{StaticResource ResourceKey=StyleButton}" Command="{Binding ShowRegistrationViewCommand}"/>
 
         </StackPanel>
 
@@ -43,7 +60,7 @@
                 <DropShadowEffect />
             </StackPanel.Effect>
             <Grid>
-                <ListBox x:Name="UserList" ItemTemplate="{StaticResource ListTamlate}">
+                <ListBox x:Name="UserList" ItemTemplate="{StaticResource ListTamlate}" ItemsSource="{Binding Path=UserDataProfiles}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel />

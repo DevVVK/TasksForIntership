@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Logon.Commands.BaseCommand;
 using Logon.Contracts;
 using Logon.MapBuilders;
 using Logon.ViewModels.Commands;
@@ -10,7 +9,7 @@ namespace Logon.ViewModels
 {
     public class MainVm
     {
-        public readonly IList<UserContract> UserDataProfiles;
+        public ObservableCollection<UserContract> UserDataProfiles { get; set; }
 
         private readonly MapUserContract _mapperUserContract = new MapUserContract();
         
@@ -18,12 +17,27 @@ namespace Logon.ViewModels
         {
             using (var userService = new UserService())
             {
-                UserDataProfiles = new ObservableCollection<UserContract>(_mapperUserContract.GetMapList(userService.GetAllUsers()));
+                //UserDataProfiles = new ObservableCollection<UserContract>(_mapperUserContract.GetMapList(userService.GetAllUsers()));
             }
+            UserDataProfiles = new ObservableCollection<UserContract>();
+
+            ShowRegistrationViewCommand = new BaseCommandRelay(ShowRegistrationView);
         }
 
-        private readonly BaseCommand _getRigstrationViewCommand = null;
+        #region Commands
 
-        public BaseCommand GetReginstrationViewCommand => _getRigstrationViewCommand ?? new GetRegistrationViewCommand(UserDataProfiles);
+        public BaseCommandRelay ShowRegistrationViewCommand { get; }
+
+        #endregion
+
+        #region Methods 
+
+        private void ShowRegistrationView(object parameter)
+        {
+            var registerWondow = new RegistrationWindow(UserDataProfiles);
+            registerWondow.ShowDialog();
+        }
+
+        #endregion
     }
 }

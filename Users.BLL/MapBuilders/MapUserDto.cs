@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Users.BLL.BusinessModels.Date;
 using Users.BLL.DTOModels.DTOForDataBase;
 using Users.BLL.Interfaces;
 using UsersDAL.Entities;
@@ -10,9 +9,6 @@ namespace Users.BLL.MapBuilders
     {
         public UserDto GetMapOne(User source)
         {
-            var dateConverter = new DateFormConverter(source.DateBirth);
-            var date = dateConverter.Form;
-
             var userDto = new UserDto
             {
                 Id = source.Id,
@@ -23,9 +19,7 @@ namespace Users.BLL.MapBuilders
                 LastName = source.LastName,
                 Gender = source.Gender,
                 PictureName = source.NamePicture,
-                Month = date.Month,
-                Year = date.Year,
-                Day = date.Day
+                DateBirth = source.DateBirth
             };
 
             return userDto;

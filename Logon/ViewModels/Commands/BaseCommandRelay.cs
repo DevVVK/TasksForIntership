@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Logon.Commands.BaseCommand
+namespace Logon.ViewModels.Commands
 {
     public class BaseCommandRelay : ICommand
     {

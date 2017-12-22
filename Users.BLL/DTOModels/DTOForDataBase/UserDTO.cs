@@ -1,4 +1,6 @@
-﻿namespace Users.BLL.DTOModels.DTOForDataBase
+﻿using System;
+
+namespace Users.BLL.DTOModels.DTOForDataBase
 {
     public class UserDto
     {
@@ -16,11 +18,7 @@
 
         public string LastName { get; set; }
 
-        public int Year { get; set; }
-
-        public string Month { get; set; }
-
-        public int Day { get; set; }
+        public DateTime DateBirth { get; set; }
 
         public string Gender { get; set; }
     }
