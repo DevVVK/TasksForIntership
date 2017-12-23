@@ -13,11 +13,8 @@ namespace UsersDAL.Entities
         [StringLength(50)]
         public string Login { get; set; }
 
-        [StringLength(50)]
+        [StringLength(100)]
         public string Password { get; set; }
-
-        [StringLength(50)]
-        public string Salt { get; set; }
 
         [Required]
         [StringLength(50)]

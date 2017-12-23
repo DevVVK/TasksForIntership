@@ -21,7 +21,7 @@
 
             <StackPanel Grid.Column="0" Margin="2" OpacityMask="Black">
                 <Border Style="{StaticResource StyleBorder}">
-                    <Image Width="130" Height="130" Margin="2" Source="{Binding Path=User.Photo, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors = True}"/>
+                    <Image Width="130" Height="130" Margin="2" Source="{Binding Path=User.Photo, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors = True}" Stretch="UniformToFill"/>
                 </Border>
                 <Button Content="Добавить фото" Command="{Binding AddPhotoCommand}" Margin="0,2" HorizontalAlignment="Center" Style="{StaticResource StyleButton}" Width="136" Height="24"/>
             </StackPanel>

@@ -51,9 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessModels\Security\DecriptionPassword.cs" />
     <Compile Include="BusinessModels\Security\EncriptionPasswordProvider.cs" />
-    <Compile Include="BusinessModels\Security\HashPasswordAndSalt .cs" />
     <Compile Include="DTOModels\DTOForDataBase\UserDTO.cs" />
     <Compile Include="Interfaces\IMapBuilder.cs" />
     <Compile Include="MapBuilders\MapUser.cs" />

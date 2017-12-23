@@ -10,9 +10,9 @@ namespace Users.BLL.Services
 {
     public class UserService : IUsersService, IDisposable
     {
-        private readonly UnitOfWork _dataBase;
+        private UnitOfWork _dataBase;
 
-        private readonly UnitOfWorkMapper _mapper;
+        private UnitOfWorkMapper _mapper;
 
         public UserService()
         {
@@ -21,16 +21,15 @@ namespace Users.BLL.Services
         }
 
 #region CRUD users
-
+        
         public void AddUser(UserDto user)
         {
             var addUser = _mapper.MapUser.GetMapOne(user);
 
-            var hasher = new EncriptionPasswordProvider(addUser.Password);
-            var hashPasswordAndSalt = hasher.GetHashPasswordAndSalt();
-
-            addUser.Password = hashPasswordAndSalt.Password;
-            addUser.Salt = hashPasswordAndSalt.Salt;
+            using (var md5Hasher = new EncriptionPasswordProvider(addUser.Password))
+            {
+                addUser.Password = md5Hasher.GetHashPassword();
+            }
 
             _dataBase.Users.Add(addUser);
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
@@ -20,30 +21,14 @@ namespace Users.BLL.BusinessModels.Security
             _password = password;
         }
 
-        public HashPasswordAndSalt GetHashPasswordAndSalt()
+        public string GetHashPassword()
         {
-            var bytesSalt = GetHashSoltBytes();
-            var hashSalt = GetStringHash(bytesSalt);
+            var bytesPassword = _md5Hasher.ComputeHash(Encoding.UTF8.GetBytes(_password));
 
-            var bytesPassword = _md5Hasher.ComputeHash(Encoding.UTF8.GetBytes(_password + hashSalt));
-            var hashPassword = GetStringHash(bytesPassword);
-
-            return new HashPasswordAndSalt { Password = hashPassword, Salt = hashSalt };
+            return GetStringHash(bytesPassword);
         }
 
-        private readonly Random _randGenerator = new Random(Guid.NewGuid().GetHashCode());
-
-        private byte[] GetHashSoltBytes()
-        {
-            var randValue = _randGenerator.Next(10, 50);
-            var secBytes = new byte[randValue];
-
-            _rnGenerator.GetBytes(secBytes);
-
-            return secBytes;
-        }
-
-        private string GetStringHash(byte[] bytes)
+        private string GetStringHash(IEnumerable<byte> bytes)
         {
             return bytes.Aggregate(string.Empty, (total, next) => total += next.ToString("x2"));
         }

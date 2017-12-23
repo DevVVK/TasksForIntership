@@ -55,7 +55,7 @@ namespace UsersDAL.Repositories.BaseRepository
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Ошибка", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                MessageBox.Show(e.InnerException.Message, "Ошибка", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Logon.Contracts;
 using Logon.MapBuilders;
 using Logon.ViewModels.Commands;
@@ -17,9 +16,8 @@ namespace Logon.ViewModels
         {
             using (var userService = new UserService())
             {
-                //UserDataProfiles = new ObservableCollection<UserContract>(_mapperUserContract.GetMapList(userService.GetAllUsers()));
+                UserDataProfiles = new ObservableCollection<UserContract>(_mapperUserContract.GetMapList(userService.GetAllUsers()));
             }
-            UserDataProfiles = new ObservableCollection<UserContract>();
 
             ShowRegistrationViewCommand = new BaseCommandRelay(ShowRegistrationView);
         }

@@ -12,13 +12,15 @@ namespace Logon.Contracts
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string FullName => $"{FirstName} {LastName}";
+
         public string Gender { get; set; }
         public DateTime DateBirth { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
         public string PictureName { get; set; }
         public ImageSource Photo { get; set; }
-
+        
         public Visibility VisibleErrorPasword { get; set; } = Visibility.Visible;
         public Visibility VisibleErrorConfirmPassword { get; set; } = Visibility.Visible;
 

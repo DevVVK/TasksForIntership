@@ -11,14 +11,13 @@ namespace Logon.MapBuilders
         {
             var userDto = new UserDto
             {
-                Id = source.Id,
                 Login = source.Login,
                 Password = source.Password,
                 FirstName = source.FirstName,
                 LastName = source.LastName,
                 Gender = source.Gender,
                 PictureName = source.PictureName,
-                
+                DateBirth = source.DateBirth
             };
 
             return userDto;

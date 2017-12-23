@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -8,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using Logon.Contracts;
+using Logon.MapBuilders;
 using Logon.Properties;
 using Logon.ViewModels.Commands;
 using Users.BLL.Services;
@@ -67,6 +67,8 @@ namespace Logon.ViewModels
             return string.Empty;
         }
 
+        private readonly MapUserDto _mapperDto = new MapUserDto();
+
         public void AddUser(PasswordBox password, PasswordBox confirmPasssword)
         {
             if (User.HasErrorsFields) return;
@@ -79,12 +81,11 @@ namespace Logon.ViewModels
                 return;
             }
 
+            User.Password = password.Password;
+
             _contracts.Add(User);
 
-            using (var userService = new UserService())
-            {
-
-            }
+            using (var userService = new UserService()) userService.AddUser(_mapperDto.GetMapOne(User));
 
             _link.Close();
         }

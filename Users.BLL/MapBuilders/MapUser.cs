@@ -11,14 +11,13 @@ namespace Users.BLL.MapBuilders
         {
             var user = new User
             {
-                Id = source.Id,
                 Login = source.Login,
                 Password = source.Password,
-                Salt = source.Salt,
                 FirstName = source.FirstName,
                 LastName = source.LastName,
                 Gender = source.Gender,
-                DateBirth = source.DateBirth
+                DateBirth = source.DateBirth,
+                NamePicture = source.PictureName
             };
 
             return user;

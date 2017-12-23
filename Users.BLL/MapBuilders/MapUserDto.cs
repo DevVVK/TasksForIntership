@@ -14,7 +14,6 @@ namespace Users.BLL.MapBuilders
                 Id = source.Id,
                 Login = source.Login,
                 Password = source.Password,
-                Salt = source.Salt,
                 FirstName = source.FirstName,
                 LastName = source.LastName,
                 Gender = source.Gender,

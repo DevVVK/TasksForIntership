@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Logon"
         mc:Ignorable="d"
         Title="Logon" Height="698" Width="1102.783"
         WindowStartupLocation = "CenterScreen" Background="#FFBFB3B3">
@@ -12,7 +11,11 @@
         <DataTemplate x:Key="ListTamlate">
             <StackPanel Orientation="Horizontal" Margin="5">
                 <Border CornerRadius="100" Style="{StaticResource StyleBorder}">
-                    <Image Width="100" Height="100" Source="{Binding Path = Photo}"/>
+                    <Ellipse Width="100" Height="100">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{Binding Path = Photo}" Stretch="UniformToFill"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
                 </Border>
                 <StackPanel>
                     <Grid>
@@ -20,8 +23,8 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Content="{Binding Path = FirstName}" Style="{StaticResource StyleLabel}"/>
-                        <Label Grid.Row="1" Content="{Binding Path = DateBirth}" Style="{StaticResource StyleLabel}"/>
+                        <Label Grid.Row="0" Content="{Binding Path = FullName}" Style="{StaticResource StyleLabel}" Foreground="Black"/>
+                        <Label Grid.Row="1" Content="{Binding Path = DateBirth}" Style="{StaticResource StyleLabel}" Foreground="Black"/>
                     </Grid>
                 </StackPanel>
             </StackPanel>
