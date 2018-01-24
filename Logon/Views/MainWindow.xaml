@@ -3,75 +3,86 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:Logon.Converters"
         mc:Ignorable="d"
-        Title="Logon" Height="698" Width="1102.783"
-        WindowStartupLocation = "CenterScreen" Background="#FFBFB3B3">
+        Title="Logon" 
+        Height="698" 
+        Width="1102.783"
+        WindowStartupLocation = "CenterScreen" 
+        Background="#FFBFB3B3">
 
     <Window.Resources>
+
+        <converters:DateTimeConverter x:Key="DateTimeConverter"/>
+
         <DataTemplate x:Key="ListTamlate">
-            <StackPanel Orientation="Horizontal" Margin="5">
-                <Border CornerRadius="100" Style="{StaticResource StyleBorder}">
-                    <Ellipse Width="100" Height="100">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{Binding Path = Photo}" Stretch="UniformToFill"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
-                </Border>
-                <StackPanel>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Content="{Binding Path = FullName}" Style="{StaticResource StyleLabel}" Foreground="Black"/>
-                        <Label Grid.Row="1" Content="{Binding Path = DateBirth}" Style="{StaticResource StyleLabel}" Foreground="Black"/>
-                    </Grid>
+            <Border Style="{StaticResource DefaultBorder}">
+                <StackPanel Orientation="Horizontal" Margin="5">
+
+                    <Button Style="{StaticResource ImageButton}" 
+                            Tag="{Binding Avatar}" 
+                            Command="{Binding DataContext.ShowLogonViewCommand, ElementName=UserList}"
+                            CommandParameter="{Binding Id}"/>
+
+                    <StackPanel>
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0" Content="{Binding FullName}" Foreground="Black"/>
+
+                            <Label Grid.Row="1" Content="{Binding DateBirth, Converter={StaticResource DateTimeConverter}}" Foreground="Black"/>
+
+                        </Grid>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
+            </Border>
         </DataTemplate>
     </Window.Resources>
 
-    <Grid Background="#FF2F3238">
+    <Grid Style="{StaticResource BaseGridStyle}">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="151"/>
+
+            <ColumnDefinition Width="Auto" MinWidth="165"/>
             <ColumnDefinition/>
+
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" 
-                    Background="#FF2F3238" 
-                    HorizontalAlignment="Left" 
-                    Width="146" 
-                    Margin="5,5,0,5">
+        <StackPanel Grid.Column="0" HorizontalAlignment="Left" Margin="5">
 
-            <Label x:Name="LblLogo" 
-                       Content="Logon" 
-                       FontSize="20" 
-                       FontFamily="Showcard Gothic"
-                       FontWeight="Bold"
-                       Foreground="#FF729CC1" 
-                       HorizontalAlignment="Center" Background="{x:Null}" Width="146.049"/>
-            <Button x:Name="BtnCreateAccount" 
-                        Height="30"
-                        Content="Добавить пользователя"
-                        Style="{StaticResource ResourceKey=StyleButton}" Command="{Binding ShowRegistrationViewCommand}"/>
+            <Button x:Name="BtnCreateAccount" Content="Добавить пользователя"
+                    Style="{StaticResource ResourceKey=DefaultButton}" 
+                    Command="{Binding ShowRegistrationViewCommand}"/>
 
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Margin="5,5,10,5" Background="White">
-            <StackPanel.Effect>
-                <DropShadowEffect />
-            </StackPanel.Effect>
-            <Grid>
-                <ListBox x:Name="UserList" ItemTemplate="{StaticResource ListTamlate}" ItemsSource="{Binding Path=UserDataProfiles}">
+        <Grid Grid.Column="1">
+
+            <Border Style="{StaticResource DefaultBorder}">
+
+                <ListBox x:Name="UserList" Margin="5"
+                         ItemTemplate="{StaticResource ListTamlate}" 
+                         ItemsSource="{Binding Path=UserDataProfiles}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel />
+
+                            <WrapPanel/>
+
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
-                </ListBox>
-            </Grid>
-        </StackPanel>
-    </Grid>
 
+                </ListBox>
+
+            </Border>
+            
+        </Grid>
+    </Grid>
 </Window>

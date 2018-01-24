@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Users.BLL.DTOModels.DTOForDataBase;
 
 namespace Users.BLL.Interfaces
 {
-    public interface IUsersService
+    /// <summary>
+    /// Интерфейс дял взаимодействия уровня доступа к данным и уровня представления, 
+    /// для обмена моделями данных 
+    /// </summary>
+    public interface IUsersService : IDisposable
     {
         void AddUser(UserDto user);
 
@@ -13,8 +18,10 @@ namespace Users.BLL.Interfaces
 
         void UpdateUser(UserDto user);
 
-        void DeleteUser(UserDto user);
+        void DeleteUser(int id);
 
-        void Dispose();
+        bool GetCheckResult(int id, string login, string password);
+
+        new void Dispose();
     }
 }

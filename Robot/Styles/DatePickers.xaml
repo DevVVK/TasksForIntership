@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Robot">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="BasedStyles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--Base date picker style-->
+    <Style x:Key="BaseDatePickerStyle" TargetType="{x:Type DatePicker}" BasedOn="{StaticResource BaseTextStyle}">
+        
+        <Setter Property="BorderBrush" Value="{StaticResource BaseColorBrush}"/>
+        
+    </Style>
+    
+    <!--Default date picker style-->
+    <Style x:Key="DefaultDatePicker" TargetType="{x:Type DatePicker}" BasedOn="{StaticResource BaseDatePickerStyle}">
+        
+        
+        
+    </Style>
+    
+</ResourceDictionary>

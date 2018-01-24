@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Logon">
+
+    <Color x:Key="ErrorTextColor">Red</Color>
+    <SolidColorBrush x:Key="ErrorTextColorBrush" Color="{StaticResource ErrorTextColor}"/>
+
+    <Color x:Key="BaseColor">#FF2F3238</Color>
+    <SolidColorBrush x:Key="BaseColorBrush" Color="{StaticResource BaseColor}"/>
+
+    <Color x:Key="TextColor">#FFDDDDDD</Color>
+    <SolidColorBrush x:Key="TextColorBrush" Color="{StaticResource TextColor}"/>
+
+    <Color x:Key="InformationCommandTextColor">AliceBlue</Color>
+    <SolidColorBrush x:Key="InformationCommandTextColorBrush" Color="{StaticResource InformationCommandTextColor}"/>
+
+    <Color x:Key="ButtonIsMouseOverColor">#FF464B53</Color>
+    <SolidColorBrush x:Key="ButtonIsMouseOverColorBrush" Color="{StaticResource ButtonIsMouseOverColor}"/>
+
+    <Color x:Key="ButtonIsPressedColor">#FF212327</Color>
+    <SolidColorBrush x:Key="ButtonIsPressedColorBrush" Color="{StaticResource ButtonIsPressedColor}"/>
+
+    <Color x:Key="SeparatorColor">#FF43474F</Color>
+    <SolidColorBrush x:Key="SeparatorColorBrush" Color="{StaticResource SeparatorColor}"/>
+
+    <Color x:Key="BorderControlColor">#FF5B616E</Color>
+    <SolidColorBrush x:Key="BorderControlColorBrush" Color="{StaticResource BorderControlColor}"/>
+
+    <Color x:Key="LabelInformationColor">#FF757D90</Color>
+    <SolidColorBrush x:Key="LabelInformationColorBrush" Color="{StaticResource LabelInformationColor}"/>
+
+</ResourceDictionary>

@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Robot">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="BasedStyles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <!--Base separator style-->
+    <Style x:Key="BaseSeparatorStyle" TargetType="{x:Type Separator}">
+        
+        <Setter Property="BorderBrush" Value="{StaticResource SeparatorColorBrush}"/>
+        
+    </Style>
+    
+    <!--Default separator-->
+    <Style x:Key="DefaultSeparator" TargetType="{x:Type Separator}" BasedOn="{StaticResource BaseSeparatorStyle}">
+        
+        <Setter Property="BorderThickness" Value="10"/>
+        
+    </Style>
+    
+</ResourceDictionary>

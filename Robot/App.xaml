@@ -4,6 +4,26 @@
              xmlns:local="clr-namespace:Robot"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/Buttons.xaml"/>
+                <ResourceDictionary Source="Styles/Grids.xaml"/>
+                <ResourceDictionary Source="Styles/Colors.xaml"/>
+                <ResourceDictionary Source="Styles/DatePickers.xaml"/>
+                <ResourceDictionary Source="Styles/Labels.xaml"/>
+                <ResourceDictionary Source="Styles/PasswordBoxes.xaml"/>
+                <ResourceDictionary Source="Styles/TextBoxes.xaml"/>
+                <ResourceDictionary Source="Styles/Separators.xaml"/>
+                <ResourceDictionary Source="Styles/Borders.xaml"/>
+                <ResourceDictionary Source="Styles/ComboBoxes.xaml"/>
+                <ResourceDictionary Source="Styles/TextBlocks.xaml"/>
+                <ResourceDictionary Source="Styles/GridSplitters.xaml"/>
+                <ResourceDictionary Source="Styles/Canvaces.xaml"/>
+                <ResourceDictionary Source="Styles/Expanders.xaml"/>
+                <ResourceDictionary Source="Styles/GroupBoxes.xaml"/>
+                <ResourceDictionary Source="Styles/ListBoxes.xaml"/>
+                <ResourceDictionary Source="Styles/ButtonIcons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Robot">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="BasedStyles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--Default canvas style-->
+    <Style x:Key="DefaultCanvas" TargetType="{x:Type Canvas}">
+
+        <Setter Property="Background" Value="Transparent"/>
+        
+    </Style>
+
+</ResourceDictionary>

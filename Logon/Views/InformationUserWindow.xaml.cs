@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,22 +12,21 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Logon.Users.Data;
+using Logon.Users.ViewModels;
+using Logon.ViewModels;
 
 namespace Logon
 {
     /// <summary>
     /// Interaction logic for UpdateWindow.xaml
     /// </summary>
-    public partial class UpdateWindow : Window
+    public partial class InformationUserWindow : Window
     {
-        public UpdateWindow()
+        public InformationUserWindow(ObservableCollection<UserContract> users, UserContract user)
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
+            DataContext = new InformationUserViewModel(users, user, this);
         }
     }
 }

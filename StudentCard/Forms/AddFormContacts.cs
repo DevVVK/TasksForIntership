@@ -42,8 +42,7 @@ namespace StudentCard.Forms
             AddButton.Enabled = false;
         }
 
-        public AddFormContacts(DataTable dataTableContact, CRUDStudent crudStudent, int currentRowContactIndex,
-            FlagAddOrUpdate flag) : this()
+        public AddFormContacts(DataTable dataTableContact, CRUDStudent crudStudent, int currentRowContactIndex, FlagAddOrUpdate flag) : this()
         {
             SetDataSourceTypeContactComboBox();
 

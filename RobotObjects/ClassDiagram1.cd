@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="RobotObjects.Objects.Base.BaseMove">
+    <Position X="2.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAABAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Base\BaseMove.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RobotObjects.Objects.Base.BaseRobot">
+    <Position X="3.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Base\BaseRobot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RobotObjects.Objects.Base.BaseRobotCommand">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABgQAAEAAAAAABAIAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Objects\Base\BaseRobotCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RobotObjects.Objects.CellRobot">
+    <Position X="0.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Objects\CellRobot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RobotObjects.Objects.GridBuilder">
+    <Position X="5.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAEAAAAAAAAAAAAAAAABAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Objects\GridBulder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RobotObjects.Objects.GridRobot">
+    <Position X="7.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAQAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Objects\GridRobot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RobotObjects.Objects.Robot">
+    <Position X="2.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Robot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RobotObjects.Objects.Commands.LearnCellCommand">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Objects\Commands\LearnCellCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RobotObjects.Objects.Commands.MoveCommand">
+    <Position X="2.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAEABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Commands\MoveCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RobotObjects.Objects.Commands.PouringCommand">
+    <Position X="5.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Objects\Commands\PouringCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RobotObjects.Objects.Commands.RotationCommand">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Commands\RotationCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RobotObjects.Objects.Control.ControlUnit">
+    <Position X="9" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Control\ControlUnit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="RobotObjects.Interfaces.IMoveObject">
+    <Position X="10.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IMoveObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="RobotObjects.Objects.Enumerables.ColorCell">
+    <Position X="9" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Enumerables\ColorCell.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="RobotObjects.Objects.Enumerables.RouteMove">
+    <Position X="10.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAACACAAAAAAAA=</HashCode>
+      <FileName>Objects\Enumerables\RouteMoveRobot.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

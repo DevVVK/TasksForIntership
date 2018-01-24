@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Robot">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="BasedStyles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <!--Base expander style-->
+    <Style x:Key="BaseExpanderStyle" TargetType="{x:Type Expander}" BasedOn="{StaticResource BaseTextStyle}">
+        
+        <Setter Property="Margin" Value="3"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColorBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderControlColorBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        
+    </Style>
+    
+    <!--Default expander-->
+    <Style x:Key="DefaultExpander" TargetType="{x:Type Expander}" BasedOn="{StaticResource BaseExpanderStyle}">
+
+        
+        
+    </Style>
+    
+</ResourceDictionary>

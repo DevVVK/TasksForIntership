@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace UsersDAL.Interfaces
 {
+    /// <summary>
+    /// Интерфейс взаимодействия с бд
+    /// </summary>
+    /// <typeparam name="TEntity">сущность бд</typeparam>
     public interface IRepository <TEntity> where TEntity : class
     {
         void Add(TEntity entity);

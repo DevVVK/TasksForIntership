@@ -5,27 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Logon.Windows"
         mc:Ignorable="d"
-        Title="Просмотр фото" Height="239.5" Width="434">
+        Title="Просмотр фото" 
+        Height="239.5" 
+        Width="434">
 
-    <Grid Style="{StaticResource StyleGrid}">
+    <Grid Style="{StaticResource BaseGridStyle}">
 
         <Grid.RowDefinitions>
+            
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Style="{StaticResource StyleBorder}" Margin="5">
+        <Border Grid.Row="0" Style="{StaticResource DefaultBorder}" Margin="5">
             <Border.Effect>
+                
                 <DropShadowEffect />
+                
             </Border.Effect>
         </Border>
 
         <Border Grid.Row="0"  Margin="5">
+            
             <Image Name="ImageUser"/>
+            
         </Border>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Выход" Margin="5" Style="{StaticResource StyleButton}" Width="61" Click="Button_Click"/>
+           
+            <Button Content="Выход" Margin="5" Style="{StaticResource DefaultButton}"/>
+        
         </StackPanel>
 
     </Grid>

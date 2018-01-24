@@ -4,42 +4,101 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Logon.Windows"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="Доступ к аккаунту" Height="147.333" Width="400" MinHeight="200" 
-                                  MaxHeight="230" MinWidth="320" MaxWidth="400">
-    <Grid Style="{StaticResource StyleGrid}">
-        
-        <Border Style="{StaticResource StyleBorder}">
+        Title="Доступ к аккаунту" 
+        Height="216.5" 
+        Width="331.5"
+        MinWidth="370"
+        MaxWidth="370"
+        MinHeight="240"
+        MaxHeight="240"
+        WindowStyle="ToolWindow"
+        WindowStartupLocation="CenterScreen" 
+        Activated="Window_Activated" 
+        PreviewKeyDown="Window_PreviewKeyDown" 
+        Initialized="Window_Initialized" 
+        PreviewKeyUp="Window_PreviewKeyUp" 
+        GotFocus="Window_GotFocus">
 
-            <StackPanel x:Name="SpLogon"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="100" Width="300">
+    <Grid Style="{StaticResource BaseGridStyle}">
 
-                <Grid Style="{StaticResource StyleGrid}">
+        <Border Style="{StaticResource DefaultBorder}" CornerRadius="20" Margin="5">
+            <Grid>
+                <Grid.RowDefinitions>
+
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Style="{StaticResource BaseGridStyle}" Margin="10">
+
                     <Grid.ColumnDefinitions>
+                        
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
+                    
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
+                    
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                    
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Column="0" Grid.Row="0" Content="Логин" Style="{StaticResource StyleLabel}"/>
-                    <TextBox Grid.Column="1" Grid.Row="0"/>
-                    <Label Grid.Column="0" Grid.Row="1" Content="Пароль" Style="{StaticResource StyleLabel}"/>
-                    <TextBox Grid.Column="1" Grid.Row="1"/>
+                    <Label Grid.Column="0" Grid.Row="0" Content="Логин" Style="{StaticResource DefaultLabel}"/>
+                    <Label Grid.Column="1" Grid.Row="0" Content="{Binding Path = Login}" Style="{StaticResource InformationLabel}"/>
+                    
+                    <Label Grid.Column="0" Grid.Row="1" Content="Пароль" Style="{StaticResource DefaultLabel}"/>
+                    <DockPanel Grid.Column="1" Grid.Row="1">
+                        
+                        <PasswordBox x:Name="UserPassword" Style="{StaticResource DefaultPasswordBox}"/>
+                    
+                    </DockPanel>
                 </Grid>
 
-                <Separator Style="{StaticResource StyleSeparator}" Margin="5,10,5,0"/>
+                <Separator Grid.Row="1" Style="{StaticResource DefaultSeparator}" Margin="5"/>
 
-                <StackPanel Orientation="Horizontal" Margin="0,10">
-                    <Button x:Name="BtnLogon" Content="Войти"  Style="{StaticResource StyleButton}" Width="106" HorizontalAlignment="Left"/>
-                    <Button x:Name="BtnLogof" Content="Отмена"  Style="{StaticResource ResourceKey=StyleButton}" Width="106" HorizontalAlignment="Right" Margin="88,0,0,0" Click="BtnLogof_Click"/>
+                <DockPanel Grid.Row="2" Margin="10">
+
+                    <Button x:Name="BtnLogon" Content="Войти"  Style="{StaticResource DefaultButton}" Width="100" Height="30" HorizontalAlignment="Left">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <cal:ActionMessage MethodName="ShowInformationUserView">
+                                   
+                                    <cal:Parameter Value="{Binding ElementName=UserPassword}"/>
+                                    
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+
+                    <Button x:Name="BtnLogof" Width="100" Height="30" Content="Отмена" 
+                            Style="{StaticResource DefaultButton}" Command="{Binding CloseWindowCommand}" HorizontalAlignment="Right"/>
+
+                </DockPanel>
+
+                <StackPanel Grid.Row="3" HorizontalAlignment="Left" Margin="10,0">
+
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               HorizontalAlignment="Left" 
+                               Style="{StaticResource ErrorTextBlock}"
+                               Visibility="{Binding ErrorVisibility}"/>
+
+                    <TextBlock x:Name="LblLang" Style="{StaticResource DefaultTextBlock}"/>
+
+                    <TextBlock x:Name="LblCapsLock" Style="{StaticResource DefaultTextBlock}" 
+                           Text="Нажата клавиша CapsLock" 
+                           Visibility="Collapsed"/>
+
                 </StackPanel>
-
-            </StackPanel>
-
+            </Grid>
         </Border>
-
     </Grid>
 </Window>
+

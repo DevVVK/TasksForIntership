@@ -1,25 +1,45 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
-using Logon.Contracts;
-using Logon.ViewModels;
+using Logon.Users.Data;
+using Logon.Users.ViewModels;
 
 namespace Logon
 {
     /// <summary>
-    /// Interaction logic for RegistrationWindow.xaml
+    /// Code-Behind
     /// </summary>
     public partial class RegistrationWindow : Window
     {
-        public RegistrationWindow(ObservableCollection<UserContract> users)
+        #region Конструторы
+
+        /// <summary>
+        /// Конструтор по умоланию
+        /// </summary>
+        /// <param name="users">список пользователей</param>
+        public RegistrationWindow()
         {
             InitializeComponent();
-            DataContext = new RegistrationVm(users, this);
         }
 
-        private void BtnClose_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Конструктор для добавления пользователя в бд
+        /// </summary>
+        /// <param name="users"></param>
+        public RegistrationWindow(ObservableCollection<UserContract> users) : this()
         {
-            this.Close();
+            DataContext = new RegistrationViewModel(users, this);
         }
+
+        /// <summary>
+        /// Конструктор для окна обновления данных пользователя в бд
+        /// </summary>
+        /// <param name="users">список пользователей для обновления на клиенте</param>
+        /// <param name="user">пользователь которого нужно обновить</param> 
+        public RegistrationWindow(ObservableCollection<UserContract> users, UserContract user) : this()
+        {
+            DataContext = new RegistrationViewModel(users, user, this);
+        }
+
+        #endregion
     }
 }
