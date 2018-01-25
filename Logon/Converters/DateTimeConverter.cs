@@ -9,7 +9,7 @@ namespace Logon.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((DateTime) value).ToString("MM.dd.yyyy");
+            return value != null ? ((DateTime) value).ToString("MM.dd.yyyy") : DateTime.Now.ToShortDateString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

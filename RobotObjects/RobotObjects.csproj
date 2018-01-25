@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RobotObjects</RootNamespace>
     <AssemblyName>RobotObjects</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,20 +45,19 @@
     <Compile Include="Objects\Base\BaseRobot.cs" />
     <Compile Include="Objects\Base\BaseMove.cs" />
     <Compile Include="Objects\Base\BaseRobotCommand.cs" />
-    <Compile Include="Objects\CellRobot.cs" />
+    <Compile Include="Objects\Grid\CellRobot.cs" />
+    <Compile Include="Objects\Commands\InitializeCommand.cs" />
     <Compile Include="Objects\Commands\LearnCellCommand.cs" />
     <Compile Include="Objects\Commands\MoveCommand.cs" />
     <Compile Include="Objects\Commands\PouringCommand.cs" />
     <Compile Include="Objects\Commands\RotationCommand.cs" />
     <Compile Include="Objects\Enumerables\ColorCell.cs" />
-    <Compile Include="Objects\Enumerables\RouteMoveRobot.cs" />
-    <Compile Include="Objects\GridRobot.cs" />
-    <Compile Include="Objects\GridBulder.cs" />
+    <Compile Include="Objects\Enumerables\RouteMove.cs" />
+    <Compile Include="Objects\Grid\GridRobot.cs" />
     <Compile Include="Objects\Robot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

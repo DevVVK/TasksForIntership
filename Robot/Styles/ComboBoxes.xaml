@@ -113,9 +113,9 @@
                                           Content="{TemplateBinding SelectionBoxItem}" 
                                           ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" 
                                           ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" 
-                                          Margin="1" 
+                                          Margin="5, 0, 20, 0" 
                                           VerticalAlignment="Center" 
-                                          HorizontalAlignment="Left"/>
+                                          HorizontalAlignment="Center"/>
 
                         <TextBox x:Name="PART_EditableTextBox" 
                                  Template="{StaticResource ComboBoxTextBox}" 

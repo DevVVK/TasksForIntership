@@ -1,7 +1,7 @@
 ﻿using RobotObjects.Objects.Base;
 using RobotObjects.Objects.Enumerables;
 
-namespace RobotObjects.Objects
+namespace RobotObjects.Objects.Grid
 {
     /// <summary>
     /// Класс представляющий ячейку сетки
@@ -37,8 +37,6 @@ namespace RobotObjects.Objects
         /// </summary>
         /// <param name="width">ширина ячейки</param>
         /// <param name="height">длинна ячейки</param>
-        /// <param name="row">строка</param>
-        /// <param name="column">столбец</param>
         /// <param name="color">цвет ячейки</param>
         /// <param name="isMove">если true - ячейка проходима, если false - ячейка не проходима</param>
         public CellRobot(double width, double height, ColorCell color, bool isMove) : base(width, height)

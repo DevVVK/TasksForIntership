@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Robot"
+        xmlns:converters="clr-namespace:Robot.Converters"
         mc:Ignorable="d"
         Icon="Icons/window_ico.ico"
         Title="MainWindow" 
@@ -59,7 +60,7 @@
                                 </Grid.RowDefinitions>
 
                                 <Expander Grid.Row="0" Header="Инициализация" Style="{StaticResource DefaultExpander}">
-                                    <Grid Style="{StaticResource BaseGridStyle}" Margin="5">
+                                    <Grid Style="{StaticResource BaseGridStyle}" Margin="5" DataContext="{Binding InitializationGridFields}">
 
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
@@ -87,16 +88,20 @@
                                         <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource DefaultTextBlock}" Text="Задание размеров сетки" TextAlignment="Center"/>
                                         <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource DefaultSeparator}" Margin="5"/>
                                         <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource DefaultTextBlock}" Text="Количество строк" Margin="5"/>
-                                        <ComboBox Grid.Row="3" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2"/>
+
+                                        <ComboBox Grid.Row="3" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2" ItemsSource="{Binding RowsSource}" SelectedItem="{Binding RowCount}"/>
                                         <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource DefaultTextBlock}" Text="Количество столбцов" Margin="5"/>
-                                        <ComboBox Grid.Row="4" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2"/>
+                                        <ComboBox Grid.Row="4" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2" ItemsSource="{Binding ColumnsSource}" SelectedItem="{Binding ColumnCount}"/>
+                                        
                                         <Separator Grid.Row="5" Grid.Column="0"  Grid.ColumnSpan="3" Style="{StaticResource DefaultSeparator}" Margin="5"/>
                                         <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource DefaultTextBlock}" Text="Задание начального положения робота" TextAlignment="Center"/>
                                         <Separator Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource DefaultSeparator}" Margin="5"/>
+                                        
                                         <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource DefaultTextBlock}" Text="Строка" Margin="5"/>
-                                        <ComboBox Grid.Row="8" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2"/>
+                                        <ComboBox Grid.Row="8" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2" ItemsSource="{Binding RowPointsSource}" SelectedItem="{Binding RowPoint, Mode=TwoWay}"/>
                                         <TextBlock Grid.Row="9" Grid.Column="0" Style="{StaticResource DefaultTextBlock}" Text="Столбец" Margin="5"/>
-                                        <ComboBox Grid.Row="9" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2"/>
+                                        <ComboBox Grid.Row="9" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2" ItemsSource="{Binding ColumnPointsSource}" SelectedItem="{Binding ColumnPoint, Mode=TwoWay}"/>
+                                        
                                         <Separator Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource DefaultSeparator}" Margin="5"/>
                                         <Button x:Name="BtnInitializationCommand" Grid.Row="11" Grid.Column="2" Style="{StaticResource DefaultButton}" Content="Создать" HorizontalAlignment="Right"/>
 
@@ -270,3 +275,4 @@
         </Grid>
     </DockPanel>
 </Window>
+

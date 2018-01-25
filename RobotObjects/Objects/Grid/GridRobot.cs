@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using RobotObjects.Objects.Base;
 
-namespace RobotObjects.Objects
+namespace RobotObjects.Objects.Grid
 {
     /// <summary>
     /// Класс представляющий сетку для перемещения робота
@@ -10,7 +9,7 @@ namespace RobotObjects.Objects
     public class GridRobot : BaseRobot
     {
         #region Открытые свойства
-        
+
         /// <summary>
         /// Ячейки сетки
         /// </summary>
@@ -31,16 +30,26 @@ namespace RobotObjects.Objects
         #region Конструкторы
 
         /// <summary>
+        /// Конструктор по умолчанию для инициализатора объектов
+        /// </summary>
+        public GridRobot()
+        {
+            
+        }
+
+        /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
         /// <param name="width">ширина сетки</param>
         /// <param name="height">высота сетки</param>
-        public GridRobot(double width, double height) : base(width, height)
+        /// <param name="rowCount">количество столбцов</param>
+        /// <param name="columnCount">количество строк</param>
+        public GridRobot(double width, double height, int rowCount, int columnCount) : base(width, height)
         {
             Cells = new List<List<CellRobot>>();
 
-            RowCount = Cells.Count;
-            ColumnCount = Cells[0].Count;
+            RowCount = rowCount;
+            ColumnCount = columnCount;
         }
 
         #endregion

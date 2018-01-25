@@ -29,6 +29,13 @@ namespace RobotObjects.Objects.Base
         #region Конструторы
 
         /// <summary>
+        /// Конструктор по умолчанию для инициализатора объектов
+        /// </summary>
+        public BaseMove()
+        {
+        }
+
+        /// <summary>
         /// Конструкторы по умолчанию для движущихся объектов
         /// </summary>
         /// <param name="width">ширина объекта</param>
@@ -39,6 +46,7 @@ namespace RobotObjects.Objects.Base
         {
             Row = row;
             Column = column;
+            RouteMove = RouteMove.Right;
         }
 
         #endregion

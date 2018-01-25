@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using RobotObjects.Objects.Grid;
 
 namespace RobotObjects.Objects.Base
 {

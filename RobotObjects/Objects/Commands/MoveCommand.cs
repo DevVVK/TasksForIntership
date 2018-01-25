@@ -1,5 +1,6 @@
 ﻿using RobotObjects.Objects.Base;
 using RobotObjects.Objects.Enumerables;
+using RobotObjects.Objects.Grid;
 
 namespace RobotObjects.Objects.Commands
 {

@@ -8,11 +8,15 @@ namespace RobotObjects.Objects
     /// </summary>
     public class Robot : BaseMove
     {
-        #region Окрытые свойства
-
-        #endregion
-
         #region Конструкторы
+
+        /// <summary>
+        /// Конструктор по умолчанию для инициализатора объектов
+        /// </summary>
+        public Robot()
+        {
+            
+        }
 
         /// <summary>
         /// Конструктор по умолчанию 
@@ -27,12 +31,5 @@ namespace RobotObjects.Objects
         }
 
         #endregion
-
-        #region Методы 
-
-
-                
-        #endregion
-
     }
 }
