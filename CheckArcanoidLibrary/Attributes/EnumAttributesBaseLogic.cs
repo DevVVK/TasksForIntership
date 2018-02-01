@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace CheckArcanoidLibrary.Attributes
 {
@@ -6,7 +7,7 @@ namespace CheckArcanoidLibrary.Attributes
     {
         public static CommandEventArgsAttribute  GetAttributeValue<TEnum>(TEnum enumValue)
         {
-            var fieldInfo = typeof(TEnum).GetField(enumValue.ToString());
+            FieldInfo fieldInfo = typeof(TEnum).GetField(enumValue.ToString());
 
             return (CommandEventArgsAttribute) Attribute.GetCustomAttribute(fieldInfo, typeof(CommandEventArgsAttribute));
         }

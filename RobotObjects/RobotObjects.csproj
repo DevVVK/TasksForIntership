@@ -42,18 +42,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Objects\Base\BaseRobot.cs" />
-    <Compile Include="Objects\Base\BaseMove.cs" />
-    <Compile Include="Objects\Base\BaseRobotCommand.cs" />
-    <Compile Include="Objects\Grid\CellRobot.cs" />
-    <Compile Include="Objects\Commands\InitializeCommand.cs" />
-    <Compile Include="Objects\Commands\LearnCellCommand.cs" />
-    <Compile Include="Objects\Commands\MoveCommand.cs" />
-    <Compile Include="Objects\Commands\PouringCommand.cs" />
-    <Compile Include="Objects\Commands\RotationCommand.cs" />
-    <Compile Include="Objects\Enumerables\ColorCell.cs" />
-    <Compile Include="Objects\Enumerables\RouteMove.cs" />
-    <Compile Include="Objects\Grid\GridRobot.cs" />
+    <Compile Include="Base\BaseMove.cs" />
+    <Compile Include="Commands\Base\BaseEmulationCommand.cs" />
+    <Compile Include="Commands\Base\BaseRobotCommand.cs" />
+    <Compile Include="EmulationEventArgs\InitializeEmulationEventArgs.cs" />
+    <Compile Include="EmulationEventArgs\MoveRobotEventArgs.cs" />
+    <Compile Include="EmulationEventArgs\PouringCellEventArgs.cs" />
+    <Compile Include="EmulationEventArgs\RotationRobotEventArgs.cs" />
+    <Compile Include="Objects\Cell.cs" />
+    <Compile Include="Commands\InitializeEmulationCommand.cs" />
+    <Compile Include="Commands\LearnCellCommand.cs" />
+    <Compile Include="Commands\MoveRobotCommand.cs" />
+    <Compile Include="Commands\PouringCellCommand.cs" />
+    <Compile Include="Commands\RotationRobotCommand.cs" />
+    <Compile Include="Enumerables\ColorCell.cs" />
+    <Compile Include="Enumerables\RouteMove.cs" />
+    <Compile Include="Objects\Grid.cs" />
     <Compile Include="Objects\Robot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
