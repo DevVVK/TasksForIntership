@@ -1,8 +1,9 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
 using Emulator.Commands.Base;
+using Emulator.Mappers;
 using Emulator.Models;
 using Emulator.ViewModels.Base;
+using Emulator.ViewModels.Helpers;
 
 namespace Emulator.ViewModels
 {
@@ -17,6 +18,15 @@ namespace Emulator.ViewModels
         /// Список команд выполняемых роботом
         /// </summary>
         private ObservableCollection<CommandModel> _commandList;
+
+        #region Для команд
+
+        /// <summary>
+        /// Поле для добавления команды изучения ячейки
+        /// </summary>
+        private BaseCommandRelay _addLearnCellCommand;
+
+        #endregion 
 
         #endregion
 
@@ -40,7 +50,7 @@ namespace Emulator.ViewModels
         /// <summary>
         /// Источник для выбора номера команды если цвет ячейки белый
         /// </summary>
-        public ObservableCollection<int> NumberCommandIfCellWhiteSource { get; set; }
+        public ObservableCollection<int> NumbersCommandIfCellWhiteSource { get; set; }
 
         #endregion
 
@@ -53,6 +63,12 @@ namespace Emulator.ViewModels
         public LearnCellViewModel(ObservableCollection<CommandModel> commandList)
         {
             _commandList = commandList;
+
+            NumbersCommandIfCellBlackSource = new ObservableCollection<int>();
+            RowGenerator.Initialize(NumbersCommandIfCellBlackSource, 0, 100, 1);
+
+            NumbersCommandIfCellWhiteSource = new ObservableCollection<int>();
+            RowGenerator.Initialize(NumbersCommandIfCellWhiteSource, 0, 100, 1);
         }
 
         #endregion
@@ -62,7 +78,27 @@ namespace Emulator.ViewModels
         /// <summary>
         /// Команда изучения цвета заливки ячейки, на которой находится робот
         /// </summary>
-        public BaseCommandRelay LearnCellCommand { get; }
+        public BaseCommandRelay LearnCellCommand =>
+            _addLearnCellCommand ?? (_addLearnCellCommand = new BaseCommandRelay(AddLearnCellCommandInList));
+
+        #endregion
+
+        #region Методы 
+
+        /// <summary>
+        /// Метод добавляющий команду изучения ячейки в список команд
+        /// </summary>
+        private void AddLearnCellCommandInList()
+        {
+            var learnCellCommandModel = new LearnCellCommandModel
+            {
+                Id = _commandList.Count,
+                CommandIdIfCellColorBlack = NumberCommandIfCellBlack,
+                CommandIdIfCellColorWhite = NumberCommandIfCellWhite
+            };
+
+            _commandList.Add(ListModelMapper.GetCommand(learnCellCommandModel));
+        }
 
         #endregion
     }

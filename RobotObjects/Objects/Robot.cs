@@ -15,7 +15,7 @@ namespace RobotObjects.Objects
         /// </summary>
         public Robot()
         {
-            
+            RouteMove = RouteMove.Right;
         } 
 
         /// <summary>
@@ -23,11 +23,10 @@ namespace RobotObjects.Objects
         /// </summary>
         /// <param name="row">начальное положение робота(индекс строки)</param>
         /// <param name="column">начальное положение робота(индекс столбца)</param>
-        public Robot(int row, int column)
+        public Robot(int row, int column) : this()
         {
             Row = row;
             Column = column;
-            RouteMove = RouteMove.Right;
         }
 
         #endregion

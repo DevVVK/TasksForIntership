@@ -1,4 +1,5 @@
 ﻿using System;
+using RobotObjects.Objects;
 
 namespace RobotObjects.EmulationEventArgs
 {
@@ -29,6 +30,11 @@ namespace RobotObjects.EmulationEventArgs
         /// </summary>
         public int ColumnPoint { get; }
 
+        /// <summary>
+        /// Коллекция ячеек в сетке
+        /// </summary>
+        public Cell[,] Cells { get; }
+
         #endregion
 
         #region Конструкторы
@@ -36,16 +42,15 @@ namespace RobotObjects.EmulationEventArgs
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
-        /// <param name="rowCount">количество строк</param>
-        /// <param name="columnCount">количество столбцов</param>
-        /// <param name="rowPoint">индекс строки</param>
-        /// <param name="columnPoint">индекс столбца</param>
-        public InitializeEmulationEventArgs(int rowCount, int columnCount, int rowPoint, int columnPoint)
+        /// <param name="gridParameters">Сетка</param>
+        /// <param name="robotPoint">Робот</param>
+        public InitializeEmulationEventArgs(Grid gridParameters, Robot robotPoint)
         {
-            RowCount = rowCount;
-            ColumnCount = columnCount;
-            RowPoint = rowPoint;
-            ColumnPoint = columnPoint;
+            RowCount = gridParameters.RowCount;
+            ColumnCount = gridParameters.ColumnCount;
+            RowPoint = robotPoint.Row;
+            ColumnPoint = robotPoint.Column;
+            Cells = gridParameters.Cells;
         }
 
         #endregion

@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using Emulator.AttributeLogic.Models;
-using RobotObjects.Enumerables;
 
 namespace Emulator.AttributeLogic
 {
@@ -16,12 +15,15 @@ namespace Emulator.AttributeLogic
         #region Открытые методы
 
         /// <summary>
-        /// Метод получения значение атрибута <see cref="DescriptionAttribute"/>
+        /// Метод получения значение атрибута <see cref="DescriptionAttribute"/> (для классов)
         /// </summary>
         /// <param name="classType">тип, который обозначен атрибутом <see cref="DescriptionAttribute"/></param>
         /// <returns></returns>
         public static string GetDescription(Type classType)
         {
+            if (!classType.IsClass)
+                throw new ArgumentException($"{classType.Name} не является классом");
+
             var attribute = (DescriptionAttribute) Attribute.GetCustomAttribute(classType, typeof(DescriptionAttribute));
 
             return attribute?.Description;

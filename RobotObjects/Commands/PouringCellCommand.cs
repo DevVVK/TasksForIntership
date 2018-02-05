@@ -1,4 +1,5 @@
-﻿using RobotObjects.Commands.Base;
+﻿using System;
+using RobotObjects.Commands.Base;
 using RobotObjects.EmulationEventArgs;
 using RobotObjects.Enumerables;
 using RobotObjects.Objects;
@@ -8,8 +9,46 @@ namespace RobotObjects.Commands
     /// <summary>
     /// Класс представляющий команду заливки ячейки выбранным цветом
     /// </summary>
-    public class PouringCellCommand : BaseEmulationCommand<PouringCellEventArgs>
+    public class PouringCellCommand : BaseRobotCommand
     {
+        /// <summary>
+        /// Событие для обновления объектов эмулятора
+        /// </summary>
+        private EventHandler<PouringCellEventArgs> _executeEvent;
+
+        /// <summary>
+        /// Объект заглушка для взаимной блокировки потоков
+        /// </summary>
+        private readonly object _locker = new object();
+
+        /// <summary>
+        /// Событие для обновления объектов эмулятора
+        /// </summary>
+        public event EventHandler<PouringCellEventArgs> PouringCellEvent
+        {
+            add
+            {
+                lock (_locker)
+                {
+                    _executeEvent += value;
+                }
+            }
+            remove
+            {
+                lock (_locker)
+                {
+                    if (value != null)
+                        _executeEvent -= value;
+
+                }
+            }
+        }
+
+        /// <summary>
+        ///  Метод вызывающий обработчик события
+        /// </summary>
+        private void OnExecuteEvent(object sender, PouringCellEventArgs e) => _executeEvent?.Invoke(sender, e);
+
         #region Закрытые поля
 
         /// <summary>

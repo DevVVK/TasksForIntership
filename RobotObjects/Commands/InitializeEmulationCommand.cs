@@ -1,4 +1,5 @@
-﻿using RobotObjects.Commands.Base;
+﻿using System;
+using RobotObjects.Commands.Base;
 using RobotObjects.EmulationEventArgs;
 using RobotObjects.Enumerables;
 using RobotObjects.Objects;
@@ -8,8 +9,46 @@ namespace RobotObjects.Commands
     /// <summary>
     /// Класс представляющий команду инициализации эмулятора
     /// </summary>
-    public class InitializeEmulationCommand : BaseEmulationCommand<InitializeEmulationEventArgs>
+    public class InitializeEmulationCommand : BaseRobotCommand
     {
+        /// <summary>
+        /// Событие для обновления объектов эмулятора
+        /// </summary>
+        private EventHandler<InitializeEmulationEventArgs> _executeEvent;
+
+        /// <summary>
+        /// Объект заглушка для взаимной блокировки потоков
+        /// </summary>
+        private readonly object _locker = new object();
+
+        /// <summary>
+        /// Событие для обновления объектов эмулятора
+        /// </summary>
+        public event EventHandler<InitializeEmulationEventArgs> CreateEmulatorEvent
+        {
+            add
+            {
+                lock (_locker)
+                {
+                    _executeEvent += value;
+                }
+            }
+            remove
+            {
+                lock (_locker)
+                {
+                    if (value != null)
+                        _executeEvent -= value;
+
+                }
+            }
+        }
+
+        /// <summary>
+        ///  Метод вызывающий обработчик события
+        /// </summary>
+        private void OnExecuteEvent(object sender, InitializeEmulationEventArgs e) => _executeEvent?.Invoke(sender, e);
+
         #region Закрытые поля
 
         /// <summary>
@@ -74,7 +113,7 @@ namespace RobotObjects.Commands
                 }
             }
 
-            OnExecuteEvent(this, new InitializeEmulationEventArgs(Grid.RowCount, Grid.ColumnCount, Robot.Row, Robot.Column));
+            OnExecuteEvent(this, new InitializeEmulationEventArgs(Grid, Robot));
         }
 
         #endregion

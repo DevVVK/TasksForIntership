@@ -4,6 +4,7 @@ using Emulator.Commands.Base;
 using Emulator.Mappers;
 using Emulator.Models;
 using Emulator.ViewModels.Base;
+using Emulator.ViewModels.Helpers;
 
 namespace Emulator.ViewModels
 {
@@ -16,19 +17,24 @@ namespace Emulator.ViewModels
         #region Закрытые поля
 
         /// <summary>
-        /// Источник данных предоставляющий выбор количества строк в сетке
-        /// </summary>
-        private readonly List<int> _rowsSource;
-
-        /// <summary>
         /// Источник данных предоставляющий выбор количества столбцов в сетке
         /// </summary>
-        private readonly List<int> _columnsSource;
+        //private readonly List<int> _columnsSource;
 
         /// <summary>
         /// Список команд выполняемых роботом
         /// </summary>
         private readonly ObservableCollection<CommandModel> _commandList;
+
+        /// <summary>
+        /// Количество строк в сетке
+        /// </summary>
+        private int _rowCount;
+
+        /// <summary>
+        /// Количество столбцов в сетке
+        /// </summary>
+        private int _columnCount;
 
         #region Для команд
 
@@ -46,12 +52,38 @@ namespace Emulator.ViewModels
         /// <summary>
         /// Количество строк в сетке 
         /// </summary>
-        public int RowCount { get; set; }
+        public int RowCount
+        {
+            get => _rowCount;
+            set
+            {
+                if (_rowCount != value)
+                {
+                    _rowCount = value;
+                    RowGenerator.Initialize(RowPointsSource, 0, value, 1);
+                    RowPoint = RowPointsSource[0];
+                    OnPropertyChanged(nameof(RowPoint));
+                }
+            } 
+        }
 
         /// <summary>
         /// Количество столбцов в сетке
         /// </summary>
-        public int ColumnCount { get; set; }
+        public int ColumnCount
+        {
+            get => _columnCount;
+            set
+            {
+                if (_columnCount != value)
+                {
+                    _columnCount = value;
+                    RowGenerator.Initialize(ColumnPointsSource, 0, value, 1);
+                    ColumnPoint = ColumnPointsSource[0];
+                    OnPropertyChanged(nameof(ColumnPoint));
+                }
+            }
+        }
 
         /// <summary>
         /// Начальное положение робота (столбец)
@@ -69,37 +101,19 @@ namespace Emulator.ViewModels
         public int NextCommandNumber { get; set; }
 
         /// <summary>
-        /// Источник номеров команд для выбора номера следующей команды
-        /// </summary>
-        public List<int> NextCommandSource { get; set; }
-
-        /// <summary>
         /// Источник для выбора количества строк в сетке
         /// </summary>
-        public List<int> RowsSource
-        {
-            get
-            {
-                InitializeSource(RowPointsSource, 0, RowCount);
-                RowPoint = RowPointsSource.Count > 0 ? RowPointsSource[0] : 0;
-
-                return _rowsSource;
-            } 
-        }
+        public List<int> RowsSource { get; }
 
         /// <summary>
         /// Источник для выбора количества столбцов
         /// </summary>
-        public List<int> ColumnsSource
-        {
-            get
-            {
-                InitializeSource(ColumnPointsSource, 0, ColumnCount);
-                ColumnPoint = ColumnPointsSource.Count > 0 ? ColumnPointsSource[0] : 0;
-
-                return _columnsSource;
-            }
-        }
+        public List<int> ColumnsSource { get; }
+        
+        /// <summary>
+        /// Источник номеров команд для выбора номера следующей команды
+        /// </summary>
+        public List<int> NextCommandSource { get; set; }
 
         /// <summary>
         /// Источник для выбора строки начального положения робота
@@ -123,30 +137,13 @@ namespace Emulator.ViewModels
         {
             _commandList = commandList;
 
-            _rowsSource = new List<int>(); InitializeSource(_rowsSource, 5, 100);
-            _columnsSource = new List<int>(); InitializeSource(_columnsSource, 5, 100);
-
-            NextCommandSource = new List<int> {0, 1};
-            NextCommandNumber = 1;
+            RowsSource = new List<int>(); RowGenerator.Initialize(RowsSource, 10, 100, 1);
+            ColumnsSource = new List<int>(); RowGenerator.Initialize(ColumnsSource, 10, 100, 1);
             RowPointsSource = new ObservableCollection<int>();
             ColumnPointsSource = new ObservableCollection<int>();
-        }
 
-        #endregion
-
-        #region Методы для инициализации источников данных
-
-        /// <summary>
-        /// Метод иницилизирующий источники данных
-        /// </summary>
-        /// <param name="recipient">приемник для записи значений</param>
-        /// <param name="begin">начальное значение цикла</param>
-        /// <param name="end">конечное значение цикла</param>
-        private void InitializeSource(ICollection<int> recipient, int begin, int end)
-        {
-            recipient.Clear();
-
-            for (var i = begin; i < end; i++) recipient.Add(i);
+            NextCommandNumber = 1;
+            NextCommandSource = new List<int> {0, 1};
         }
 
         #endregion
@@ -178,7 +175,7 @@ namespace Emulator.ViewModels
                 NextCommandNumber = NextCommandNumber
             };
 
-            _commandList.Add(ModelMapper.GetCommand(initializeCommandModel));
+            _commandList.Add(ListModelMapper.GetCommand(initializeCommandModel));
         }
 
         #endregion 

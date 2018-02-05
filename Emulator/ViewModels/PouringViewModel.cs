@@ -79,7 +79,7 @@ namespace Emulator.ViewModels
                 NextCommandId = _commandList.Count + 1
             };
 
-            _commandList.Add(ModelMapper.GetCommand(pouringCommandModel));
+            _commandList.Add(ListModelMapper.GetCommand(pouringCommandModel));
         }
 
         #endregion 

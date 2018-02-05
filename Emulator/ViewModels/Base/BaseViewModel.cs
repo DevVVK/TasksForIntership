@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Emulator.ViewModels.Base
 {
@@ -25,7 +26,20 @@ namespace Emulator.ViewModels.Base
         /// <summary>
         /// Событие изменения свойства (не реализовано так как подключена библиотека FodyPropertyChanged
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Методы
+
+        /// <summary>
+        /// Метод вызывающий событиие изменения свойства
+        /// </summary>
+        /// <param name="property">свойство, которое обновилось</param>
+        public void OnPropertyChanged([CallerMemberName] string property = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+        }
 
         #endregion
     }

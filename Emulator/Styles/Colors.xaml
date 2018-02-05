@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Robot">
+                    xmlns:local="clr-namespace:Emulator">
 
     <Color x:Key="ErrorTextColor">Red</Color>
     <SolidColorBrush x:Key="ErrorTextColorBrush" Color="{StaticResource ErrorTextColor}"/>

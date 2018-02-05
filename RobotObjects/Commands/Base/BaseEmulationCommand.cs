@@ -11,7 +11,7 @@ namespace RobotObjects.Commands.Base
         /// <summary>
         /// Событие для обновления объектов эмулятора
         /// </summary>
-        private EventHandler<TArgs> _executeEvent;
+        private EventHandler _executeEvent;
 
         /// <summary>
         /// Объект заглушка для взаимной блокировки потоков
@@ -21,7 +21,7 @@ namespace RobotObjects.Commands.Base
         /// <summary>
         /// Событие для обновления объектов эмулятора
         /// </summary>
-        public event EventHandler<TArgs> ExecuteEvent
+        public event EventHandler ExecuteEvent
         {
             add
             {

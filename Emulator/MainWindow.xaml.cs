@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Emulator.ViewModels;
+using Emulator.ViewModels.MainViewModel;
 
 namespace Emulator
 {
@@ -11,7 +11,7 @@ namespace Emulator
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            DataContext = new MainViewModel(RobotFieldGrid);
         }
     }
 }

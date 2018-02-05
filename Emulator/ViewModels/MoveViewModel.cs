@@ -23,7 +23,7 @@ namespace Emulator.ViewModels
         /// <summary>
         /// Список номеров команд для выбора номера следующей команды
         /// </summary>
-        private readonly ObservableCollection<int> _nextCommandSource;
+        //private readonly ObservableCollection<int> _nextCommandSource;
 
         #region Для команд
 
@@ -116,7 +116,7 @@ namespace Emulator.ViewModels
                 NextCommandNumber = _commandList.Count + 1
             };
 
-            _commandList.Add(ModelMapper.GetCommand(moveRobotModel));
+            _commandList.Add(ListModelMapper.GetCommand(moveRobotModel));
         }
 
         #endregion 

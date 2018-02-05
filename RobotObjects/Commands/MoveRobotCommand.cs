@@ -1,4 +1,5 @@
-﻿using RobotObjects.Commands.Base;
+﻿using System;
+using RobotObjects.Commands.Base;
 using RobotObjects.EmulationEventArgs;
 using RobotObjects.Enumerables;
 using RobotObjects.Objects;
@@ -8,8 +9,46 @@ namespace RobotObjects.Commands
     /// <summary>
     /// Класс представляющий  движения робота на выбранное количество клеток
     /// </summary>
-    public class MoveRobotCommand : BaseEmulationCommand<MoveRobotEventArgs>
+    public class MoveRobotCommand : BaseRobotCommand
     {
+        /// <summary>
+        /// Событие для обновления объектов эмулятора
+        /// </summary>
+        private EventHandler<MoveRobotEventArgs> _executeEvent;
+
+        /// <summary>
+        /// Объект заглушка для взаимной блокировки потоков
+        /// </summary>
+        private readonly object _locker = new object();
+
+        /// <summary>
+        /// Событие для обновления объектов эмулятора
+        /// </summary>
+        public event EventHandler<MoveRobotEventArgs> MoveRobotEvent
+        {
+            add
+            {
+                lock (_locker)
+                {
+                    _executeEvent += value;
+                }
+            }
+            remove
+            {
+                lock (_locker)
+                {
+                    if (value != null)
+                        _executeEvent -= value;
+
+                }
+            }
+        }
+
+        /// <summary>
+        ///  Метод вызывающий обработчик события
+        /// </summary>
+        private void OnExecuteEvent(object sender, MoveRobotEventArgs e) => _executeEvent?.Invoke(sender, e);
+
         #region Открытые свойства
 
 

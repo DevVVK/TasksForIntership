@@ -124,18 +124,18 @@
                                         <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource DefaultSeparator}" Margin="5"/>
                                         <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource DefaultTextBlock}" Text="Количество строк" Margin="5"/>
 
-                                        <ComboBox x:Name="RowCount" Grid.Row="3" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2" ItemsSource="{Binding RowsSource}" SelectedItem="{Binding RowCount}"/>
+                                        <ComboBox x:Name="RowCount" Grid.Row="3" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2" ItemsSource="{Binding RowsSource}" SelectedValue="{Binding RowCount}"/>
                                         <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource DefaultTextBlock}" Text="Количество столбцов" Margin="5"/>
-                                        <ComboBox x:Name="ColumnCount" Grid.Row="4" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2" ItemsSource="{Binding ColumnsSource}" SelectedItem="{Binding ColumnCount}"/>
+                                        <ComboBox x:Name="ColumnCount" Grid.Row="4" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2" ItemsSource="{Binding ColumnsSource}" SelectedValue="{Binding ColumnCount}"/>
 
                                         <Separator Grid.Row="5" Grid.Column="0"  Grid.ColumnSpan="3" Style="{StaticResource DefaultSeparator}" Margin="5"/>
                                         <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource DefaultTextBlock}" Text="Задание начального положения робота" TextAlignment="Center"/>
                                         <Separator Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource DefaultSeparator}" Margin="5"/>
 
                                         <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource DefaultTextBlock}" Text="Строка" Margin="5"/>
-                                        <ComboBox x:Name="Row" Grid.Row="8" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2" ItemsSource="{Binding RowPointsSource}" SelectedItem="{Binding RowPoint, Mode=TwoWay}"/>
+                                        <ComboBox x:Name="Row" Grid.Row="8" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2" ItemsSource="{Binding RowPointsSource}" SelectedValue="{Binding RowPoint}"/>
                                         <TextBlock Grid.Row="9" Grid.Column="0" Style="{StaticResource DefaultTextBlock}" Text="Столбец" Margin="5"/>
-                                        <ComboBox x:Name="Column"  Grid.Row="9" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2" ItemsSource="{Binding ColumnPointsSource}" SelectedItem="{Binding ColumnPoint, Mode=TwoWay}"/>
+                                        <ComboBox x:Name="Column"  Grid.Row="9" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="2" ItemsSource="{Binding ColumnPointsSource}" SelectedValue="{Binding ColumnPoint}"/>
 
                                         <Separator Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource DefaultSeparator}" Margin="5"/>
 
@@ -238,7 +238,7 @@
                                 </Expander>
 
                                 <Expander Grid.Row="4" Header="Изучение" Style="{StaticResource DefaultExpander}">
-                                    <Grid Style="{StaticResource BaseGridStyle}" Margin="5">
+                                    <Grid Style="{StaticResource BaseGridStyle}" DataContext="{Binding LearnerCellWhereLocationRobot}" Margin="5">
 
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
@@ -256,11 +256,15 @@
 
                                         <Separator Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource DefaultSeparator}" Margin="5"/>
                                         <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource DefaultTextBlock}" Text="Если цвет ячейки черный" Margin="5"/>
-                                        <ComboBox Grid.Row="1" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="1"/>
+                                        <ComboBox Grid.Row="1" Grid.Column="1" Style="{StaticResource DefaultComboBox}" 
+                                                  ItemsSource="{Binding NumbersCommandIfCellBlackSource}" 
+                                                  SelectedValue="{Binding NumberCommandIfCellBlack}"  Margin="1"/>
                                         <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource DefaultTextBlock}" Text="Если цвет ячейки белый" Margin="5"/>
-                                        <ComboBox Grid.Row="2" Grid.Column="1" Style="{StaticResource DefaultComboBox}" Margin="1"/>
+                                        <ComboBox Grid.Row="2" Grid.Column="1" Style="{StaticResource DefaultComboBox}" 
+                                                  ItemsSource="{Binding NumbersCommandIfCellWhiteSource}"
+                                                  SelectedValue="{Binding NumberCommandIfCellWhite}" Margin="1"/>
                                         <Separator Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource DefaultSeparator}" Margin="5"/>
-                                        <Button x:Name="BtnAddLearnCommand" Grid.Row="4" Grid.Column="2" Style="{StaticResource DefaultButton}" Content="Добавить" HorizontalAlignment="Right"/>
+                                        <Button x:Name="BtnAddLearnCommand" Grid.Row="4" Grid.Column="2" Style="{StaticResource DefaultButton}" Command="{Binding LearnCellCommand}"  Content="Добавить" HorizontalAlignment="Right"/>
 
                                     </Grid>
                                 </Expander>
@@ -280,7 +284,7 @@
                             </Grid.RowDefinitions>
 
                             <Border x:Name="WokrinCommandButtons" Grid.Row="0" Style="{StaticResource DefaultBorder}" Margin="3">
-                                <Grid Style="{StaticResource BaseGridStyle}" Margin="{Binding ElementName=WokrinCommandButtons, Path=CornerRadius.TopLeft}">
+                                <Grid Style="{StaticResource BaseGridStyle}" DataContext="{Binding CommandListManager}" Margin="{Binding ElementName=WokrinCommandButtons, Path=CornerRadius.TopLeft}">
 
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -292,7 +296,7 @@
 
                                     <StackPanel Grid.Row="1" Orientation="Horizontal">
                                         <Button x:Name="BtnStartListCommand" Content="Старт" Style="{StaticResource MenuButton}" Tag="{StaticResource RightArrowIcon}"
-                                                ToolTip="Старт выполнения списка команд"/>
+                                                ToolTip="Старт выполнения списка команд" Command="{Binding StartEmulationCommand}"/>
                                         <Button x:Name="BtnStepCommand" Content="Шаг" Style="{StaticResource MenuButton}" Tag="{StaticResource BottomArrowIcon}" 
                                                 ToolTip="Пошаговое выполнение команд"/>
                                         <Button x:Name="BtnClearListCommand" Content="Очистить" Style="{StaticResource MenuButton}" Tag="{StaticResource ClearIcon}" 

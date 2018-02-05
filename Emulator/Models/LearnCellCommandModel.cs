@@ -5,7 +5,7 @@ namespace Emulator.Models
     /// <summary>
     /// Класс представляющий модель команды изучения ячейки 
     /// </summary>
-    [Description("Изучение ячейки")]
+    [Description("Изучение")]
     public class LearnCellCommandModel
     {
         #region Открытые свойства

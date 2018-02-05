@@ -1,9 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Controls;
 using Emulator.Models;
 using Emulator.ViewModels.Base;
 using RobotObjects.Commands.Base;
 
-namespace Emulator.ViewModels
+namespace Emulator.ViewModels.MainViewModel
 {
     /// <summary>
     /// Класс представляющий модель-представления эмулятора среды разработки и выполнения алгоритма для робота
@@ -47,6 +48,11 @@ namespace Emulator.ViewModels
         /// </summary>
         public RotationViewModel RotationInSelectCell { get; }
 
+        /// <summary>
+        /// Свойство представляющее объект команды запуска выполнения списка команд
+        /// </summary>
+        public CommandListManagerViewModel CommandListManager { get; }
+
         #endregion
 
         #region Конструкторы
@@ -54,7 +60,7 @@ namespace Emulator.ViewModels
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
-        public MainViewModel()
+        public MainViewModel(Grid visualGrid)
         {
             CommandObjectList = new ObservableCollection<BaseRobotCommand>();
             CommandList = new ObservableCollection<CommandModel>();
@@ -64,6 +70,7 @@ namespace Emulator.ViewModels
             InitializationGridFields = new InitializationViewModel(CommandList);
             LearnerCellWhereLocationRobot = new LearnCellViewModel(CommandList);
             PouringCellWhereLocationRobot = new PouringViewModel(CommandList);
+            CommandListManager = new CommandListManagerViewModel(CommandList, visualGrid);
         }
 
         #endregion

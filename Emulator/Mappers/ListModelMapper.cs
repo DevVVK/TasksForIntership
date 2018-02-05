@@ -6,7 +6,7 @@ namespace Emulator.Mappers
     /// <summary>
     /// Класс отображения данных списка команд в модели команд
     /// </summary>
-    public static class ModelMapper
+    public static class ListModelMapper
     {
         #region Методы отображения моделей
 
