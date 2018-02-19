@@ -25,6 +25,7 @@
                 <ResourceDictionary Source="Styles/ListBoxes.xaml"/>
                 <ResourceDictionary Source="Styles/ButtonIcons.xaml"/>
                 <ResourceDictionary Source="Styles/ListViews.xaml"/>
+                <ResourceDictionary Source="Styles/DataGrids.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

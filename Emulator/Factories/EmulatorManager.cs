@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -27,19 +28,14 @@ namespace Emulator.Factories
         private readonly Cell[,] _cells;
 
         /// <summary>
-        /// Количество строк в сетке 
-        /// </summary>
-        private readonly int _rowCount;
-
-        /// <summary>
-        /// Количество стволбцов в сетке
-        /// </summary>
-        private readonly int _columnCount;
-
-        /// <summary>
         /// Отображаемые ячейки
         /// </summary>
         private readonly Rectangle[,] _visibleCells;
+
+        /// <summary>
+        /// Размер ячейки
+        /// </summary>
+        private readonly double _cellSize;
 
         #endregion
 
@@ -52,61 +48,19 @@ namespace Emulator.Factories
         /// <param name="cells">ячейки сетки</param>
         /// <param name="rowCount">количество строк в сетке</param>
         /// <param name="columnCount">количество столбцов в сетке</param>
-        /// <param name="rowPoint">индекс строки нахождения робота</param>
-        /// <param name="columnPoint">индкс столбца нахождения робота</param>
         public EmulatorManager(Grid grid, Cell[,] cells, int rowCount, int columnCount)
         {
             _grid = grid;
             _cells = cells;
-            _rowCount = rowCount;
-            _columnCount = columnCount;
             _visibleCells = new Rectangle[rowCount, columnCount];
+            _cellSize = _grid.MinWidth / columnCount;
 
-            InitializeGrid();
+            InitializeGrid(rowCount, columnCount);
         }
 
         #endregion
 
         #region Открытые методы
-
-        /// <summary>
-        /// Методы заполняющий сетку ячейками
-        /// </summary>
-        private void InitializeGrid()
-        {
-            for (var row = 0; row < _rowCount; row++)
-            {
-                for (var column = 0; column < _columnCount; column++)
-                {
-                    Rectangle cell = null;
-                    RowDefinition rowDef = new RowDefinition{Height = GridLength.Auto};
-                    ColumnDefinition colDef = new ColumnDefinition{Width = GridLength.Auto};
-
-                    switch (_cells[row, column].Color)
-                    {
-                        case ColorCell.Black:
-                            cell = CreateRectangle(new SolidColorBrush {Color = Colors.Black});
-                            break;
-
-                        case ColorCell.White:
-                            cell = CreateRectangle(new SolidColorBrush {Color = Colors.White});
-                            break;
-
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-
-                    _grid.RowDefinitions.Add(rowDef);
-                    _grid.ColumnDefinitions.Add(colDef);
-
-                    Grid.SetRow(cell, row);
-                    Grid.SetColumn(cell, column);
-
-                    _visibleCells[row, column] = cell;
-                    _grid.Children.Add(cell);
-                }
-            }
-        }
 
         /// <summary>
         /// Метод добавляющий робота в с сетку
@@ -116,6 +70,8 @@ namespace Emulator.Factories
         /// <param name="columnPoint">индекс столбца нахождения робота</param>
         public void AddRobot(Path robot, int rowPoint, int columnPoint)
         {
+            robot.Data = CreateDataFigure(_visibleCells[rowPoint, columnPoint].Width);
+
             Grid.SetRow(robot, rowPoint);
             Grid.SetColumn(robot, columnPoint);
 
@@ -145,11 +101,11 @@ namespace Emulator.Factories
             switch (color)
             {
                 case ColorCell.Black:
-                    _visibleCells[row, column].Fill = new SolidColorBrush{ Color = Colors.Black };
+                    _visibleCells[row, column].Fill = new SolidColorBrush { Color = Colors.Black };
                     break;
 
                 case ColorCell.White:
-                    _visibleCells[row, column].Fill = new SolidColorBrush { Color = Colors.Black };
+                    _visibleCells[row, column].Fill = new SolidColorBrush { Color = Colors.White };
                     break;
 
                 default:
@@ -157,7 +113,6 @@ namespace Emulator.Factories
             }
         }
 
-        //TODO : реализовать метод поворота робота
         /// <summary>
         /// Метод поворачивающий визуального робота в указанном направлении
         /// </summary>
@@ -165,42 +120,127 @@ namespace Emulator.Factories
         /// <param name="route">направление поворота</param>
         public void RotationRobot(Path robot, RouteMove route)
         {
-           /* var rotateTransform = robot.RenderTransform as RotateTransform;
+            RotateTransform rotation = new RotateTransform();
+            Point center = new Point(0.5,0.5);
 
-            if (rotateTransform != null)
+            switch (route)
             {
-                rotateTransform.CenterX = robot.Width / 2;
-                rotateTransform.CenterY = robot.Height / 2;
-
-                switch (route)
-                {
-
-                }
-            }*/
+                case RouteMove.Right:
+                    robot.RenderTransformOrigin = center;
+                    rotation.Angle = 0;
+                    robot.RenderTransform = rotation;
+                    break;
+                case RouteMove.Left:
+                    robot.RenderTransformOrigin = center;
+                    rotation.Angle = 180;
+                    robot.RenderTransform = rotation;
+                    break;
+                case RouteMove.Top:
+                    robot.RenderTransformOrigin = center;
+                    rotation.Angle = 270;
+                    robot.RenderTransform = rotation;
+                    break;
+                case RouteMove.Bottom:
+                    robot.RenderTransformOrigin = center;
+                    rotation.Angle = 90;
+                    robot.RenderTransform = rotation;
+                    break;
+            }
         }
-        
+
         #endregion
 
         #region Закрытые методы
 
         /// <summary>
+        ///  Методы заполняющий сетку ячейками
+        /// </summary>
+        /// <param name="rowCount">количество строк в сетке</param>
+        /// <param name="columnCount">количество столбцов в сетке</param>
+        private void InitializeGrid(int rowCount, int columnCount)
+        {
+            _grid.Children.Clear();
+
+            for (var row = 0; row < rowCount; row++)
+            {
+                for (var column = 0; column < columnCount; column++)
+                {
+                    switch (_cells[row, column].Color)
+                    {
+                        case ColorCell.Black:
+                            AddCellInGrid(Colors.Black, row, column);
+                            break;
+                        case ColorCell.White:
+                            AddCellInGrid(Colors.White, row, column);
+                            break;
+
+                        default: throw new ArgumentOutOfRangeException();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Добавляет ячейку в сетку
+        /// </summary>
+        /// <param name="color">цвет ячейки</param>
+        /// <param name="row">строка</param>
+        /// <param name="column">столбец</param>
+        private void AddCellInGrid(Color color, int row, int column)
+        {
+            var cell = CreateRectangle(color);
+
+            var rowDef = new RowDefinition { Height = GridLength.Auto };
+            var colDef = new ColumnDefinition { Width = GridLength.Auto };
+
+            _grid.RowDefinitions.Add(rowDef);
+            _grid.ColumnDefinitions.Add(colDef);
+
+            Grid.SetRow(cell, row);
+            Grid.SetColumn(cell, column);
+
+            _grid.Children.Add(cell);
+            _visibleCells[row, column] = cell;
+        }
+
+        /// <summary>
         /// Создает ячейку
         /// </summary>
-        /// <param name="fill">цвет ячейки</param>
+        /// <param name="color">цвет ячейки</param>
         /// <returns></returns>
-        private Rectangle CreateRectangle(SolidColorBrush fill)
+        private Rectangle CreateRectangle(Color color)
         {
-            var size = _grid.Width / _columnCount;
-
-            return new Rectangle
+            var cell = new Rectangle
             {
-                Width = size,
-                Height = size,
-                Fill = fill,
-                Margin = new Thickness(0.2),
+                Width = _cellSize,
+                Height = _cellSize,
+                Fill = new SolidColorBrush(color),
+                Margin = new Thickness(0.5),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };
+
+            return cell;
+        }
+
+        /// <summary>
+        /// Метод рисующий робота по заданному размеру
+        /// </summary>
+        /// <returns></returns>
+        private static PathGeometry CreateDataFigure(double size)
+        {
+            var realSize = size - size / 10;
+
+            var segments = new List<PathSegment>
+            {
+                new LineSegment(new Point(realSize / 4, 0), true),
+                new LineSegment(new Point(realSize, realSize / 2), true),
+                new LineSegment(new Point(realSize / 4, realSize), true)
+            };
+
+            var figure = new PathFigure(new Point(realSize / 2, realSize / 2), segments, true);
+
+            return new PathGeometry(new List<PathFigure> { figure });
         }
 
         #endregion

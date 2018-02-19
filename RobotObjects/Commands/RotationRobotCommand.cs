@@ -68,9 +68,7 @@ namespace RobotObjects.Commands
         public RotationRobotCommand(Robot robot, RouteMove routeRobot)
         {
             Robot = robot;
-
             _routeRobot = routeRobot;
-
             Execute = UpdateRoute;
         }
 
@@ -81,68 +79,47 @@ namespace RobotObjects.Commands
         /// <summary>
         /// Метод изменяющий направление движения направление движения
         /// </summary>
-        public void UpdateRoute()
+        private void UpdateRoute()
         {
             switch (_routeRobot)
             {
                 case RouteMove.Right:
                     switch (Robot.RouteMove)
                     {
-                        case RouteMove.Right:
-                            Robot.RouteMove = RouteMove.Bottom;
-
-                            OnExecuteEvent(this, new RotationRobotEventArgs(Robot.RouteMove));
-                            break;
-
-                        case RouteMove.Bottom:
-                            Robot.RouteMove = RouteMove.Left;
-
-                            OnExecuteEvent(this, new RotationRobotEventArgs(Robot.RouteMove));
-                            break;
-
-                        case RouteMove.Left:
-                            Robot.RouteMove = RouteMove.Top;
-
-                            OnExecuteEvent(this, new RotationRobotEventArgs(Robot.RouteMove));
-                            break;
-
-                        case RouteMove.Top:
-                            Robot.RouteMove = RouteMove.Right;
-
-                            OnExecuteEvent(this, new RotationRobotEventArgs(Robot.RouteMove));
-                            break;
+                        case RouteMove.Right: Update(Robot, RouteMove.Bottom); break;
+                        case RouteMove.Bottom: Update(Robot, RouteMove.Left); break;
+                        case RouteMove.Left: Update(Robot, RouteMove.Top); break;
+                        case RouteMove.Top: Update(Robot, RouteMove.Right); break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
                     break;
 
                 case RouteMove.Left:
                     switch (Robot.RouteMove)
                     {
-                        case RouteMove.Right:
-                            Robot.RouteMove = RouteMove.Top;
-
-                            OnExecuteEvent(this, new RotationRobotEventArgs(Robot.RouteMove));
-                            break;
-
-                        case RouteMove.Top:
-                            Robot.RouteMove = RouteMove.Left;
-
-                            OnExecuteEvent(this, new RotationRobotEventArgs(Robot.RouteMove));
-                            break;
-
-                        case RouteMove.Left:
-                            Robot.RouteMove = RouteMove.Bottom;
-
-                            OnExecuteEvent(this, new RotationRobotEventArgs(Robot.RouteMove));
-                            break;
-
-                        case RouteMove.Bottom:
-                            Robot.RouteMove = RouteMove.Right;
-
-                            OnExecuteEvent(this, new RotationRobotEventArgs(Robot.RouteMove));
-                            break;
+                        case RouteMove.Right: Update(Robot, RouteMove.Top); break;
+                        case RouteMove.Top: Update(Robot, RouteMove.Left); break;
+                        case RouteMove.Left: Update(Robot, RouteMove.Bottom); break;
+                        case RouteMove.Bottom: Update(Robot, RouteMove.Right); break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
+        }
+
+        /// <summary>
+        /// Метод для изменения направления движения робота и вызова обработчика события изменения направления робота
+        /// </summary>
+        /// <param name="robot">робот</param>
+        /// <param name="route">направление</param>
+        private void Update(Robot robot, RouteMove route)
+        {
+            robot.RouteMove = route;
+            OnExecuteEvent(this, new RotationRobotEventArgs(robot.RouteMove));
         }
 
         #endregion

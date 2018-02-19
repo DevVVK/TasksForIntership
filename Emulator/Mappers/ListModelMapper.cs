@@ -6,29 +6,9 @@ namespace Emulator.Mappers
     /// <summary>
     /// Класс отображения данных списка команд в модели команд
     /// </summary>
-    public static class ListModelMapper
+    /*public static class ListModelMapper
     {
         #region Методы отображения моделей
-
-        /// <summary>
-        /// Метод отображения модели <see cref="InitializeCommandModel"/> в модель <see cref="CommandModel"/>
-        /// </summary>
-        /// <param name="source">источник данных см. <see cref="InitializeCommandModel"/></param>
-        /// <returns></returns>
-        public static CommandModel GetCommand(InitializeCommandModel source)
-        {
-            if (source == null) return null;
-
-            var commandModel = new CommandModel
-            {
-                CommandId = source.Id,
-                CommandName = AttributeManager.GetDescription(typeof(InitializeCommandModel)),
-                OneParameter = $"[{source.RowCount};{source.ColumnCount}], [{source.RowPoint};{source.ColumnPoint}]",
-                TwoParameter = source.NextCommandNumber.ToString()
-            };
-
-            return commandModel;
-        }
 
         /// <summary>
         /// Метод отображения модели <see cref="LearnCellCommandModel"/> в модель <see cref="CommandModel"/>
@@ -111,5 +91,5 @@ namespace Emulator.Mappers
         }
 
         #endregion
-    }
+    }*/
 }

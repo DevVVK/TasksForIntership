@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Emulator.Commands.Base;
+using Emulator.Interpreters;
 using Emulator.Models;
 using Emulator.ViewModels.Base;
 
@@ -24,10 +25,10 @@ namespace Emulator.ViewModels
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
-        /// <param name="commandList">список выполняемых роботом команд</param>
-        public FileManagerViewModel(ObservableCollection<CommandModel> commandList)
+        /// <param name="commandInterpreter">интерпретатор команд</param>
+        public FileManagerViewModel(CommandInterpreter commandInterpreter)
         {
-            _commandList = commandList;
+            _commandList = commandInterpreter.CommandList;
         }
 
         #endregion

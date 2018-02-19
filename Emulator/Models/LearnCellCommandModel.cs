@@ -25,11 +25,6 @@ namespace Emulator.Models
         /// </summary>
         public int CommandIdIfCellColorBlack { get; set; }
 
-        /// <summary>
-        /// Номер следующей команды
-        /// </summary>
-        public int NextCommandNumber { get; set; }
-
         #endregion
     }
 }

@@ -1,16 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Emulator.AttributeLogic;
+using System.Windows.Threading;
 using Emulator.Factories;
 using Emulator.Mappers;
 using Emulator.Models;
+using Emulator.ViewModels.Enumerables;
 using RobotObjects.Commands;
 using RobotObjects.Commands.Base;
 using RobotObjects.EmulationEventArgs;
+using RobotObjects.Exceptions;
 using RobotObjects.Objects;
 using VisibleGrid = System.Windows.Controls.Grid;
 
@@ -24,9 +26,19 @@ namespace Emulator.Interpreters
         #region Закрытые поля 
 
         /// <summary>
-        /// Список выполняемых команд
+        /// Ссылка на объект класса создания робота
         /// </summary>
-        private readonly ObservableCollection<CommandModel> _commandList;
+        private readonly RobotInitializer _robotInitializer;
+
+        /// <summary>
+        /// Отображаемая сетка
+        /// </summary>
+        private readonly VisibleGrid _visibleGrid;
+        
+        /// <summary>
+        /// Отображаемый робот
+        /// </summary>
+        private Path _visibleRobot;
 
         /// <summary>
         /// Робот-исполнитель
@@ -39,21 +51,36 @@ namespace Emulator.Interpreters
         private Grid _grid;
 
         /// <summary>
-        /// Отображаемая сетка
-        /// </summary>
-        private readonly VisibleGrid _visibleGrid;
-
-        /// <summary>
-        /// Отображаемый робот
-        /// </summary>
-        private Path _visibleRobot;
-
-        /// <summary>
         /// Инициализвтор сетки
         /// </summary>
         private EmulatorManager _manager;
 
+        /// <summary>
+        /// Таймер для посекундного выполнения команд
+        /// </summary>
+        private readonly DispatcherTimer _invokator;
+
+        /// <summary>
+        /// Ссылка на вызывающий метод
+        /// </summary>
+        private Action _invokeMethod;
+
+        /// <summary>
+        /// Очередь для хранения списка команд
+        /// </summary>
+        private readonly Queue<Action> _invokedMethods;
+
+        /// <summary>
+        /// Список команд для команды изучения ячейки
+        /// </summary>
+        private readonly List<BaseRobotCommand> _commands;
+
         #endregion
+
+        /// <summary>
+        /// Список команд
+        /// </summary>
+        public ObservableCollection<CommandModel> CommandList { get; set; }
 
         #region Конструкторы
 
@@ -62,10 +89,14 @@ namespace Emulator.Interpreters
         /// </summary>
         /// <param name="commandList">список команд для отображения в объеты команд</param>
         /// <param name="visibleGrid">отображаемая сетка</param>
-        public CommandInterpreter(ObservableCollection<CommandModel> commandList, VisibleGrid visibleGrid)
+        public CommandInterpreter(VisibleGrid visibleGrid)
         {
-            _commandList = commandList;
             _visibleGrid = visibleGrid;
+            _commands = new List<BaseRobotCommand>();
+            _robotInitializer = new RobotInitializer();
+            _invokator = new DispatcherTimer{ Interval = new TimeSpan(0,0,1) };
+            _invokedMethods = new Queue<Action>();
+            _invokator.Tick += timer_tick;
         }
 
         #endregion
@@ -73,12 +104,59 @@ namespace Emulator.Interpreters
         #region Методы
 
         /// <summary>
-        /// Метод получающий список команд
+        /// Метод для запуска выполнения команд
         /// </summary>
-        /// <returns></returns>
-        public List<BaseRobotCommand> GetCommandList()
+        /// <param name="commandList">список выполняемых команд</param>
+        public void StartInvoked()
         {
-            return _commandList.Select(item => GetCommand(item)).ToList();
+            try
+            {
+                CommandList.Select(GetCommand).ToList().ForEach(item => item.ExecuteMethod());
+            }
+            catch (NotIsMoveInCellException exception)
+            {
+                _invokator.Start(); return;
+            }
+
+            _invokator.Start();
+        }
+
+        /// <summary>
+        /// Метод для остановки выполнения команд
+        /// </summary>
+        public void StopInvoked()
+        {
+            _invokator.Stop();
+        }
+
+        /// <summary>
+        /// Метод для очистки списка команд
+        /// </summary>
+        /// <param name="commandList">список выполняемых команд</param>
+        public void ClearCommandList(ObservableCollection<CommandModel> commandList)
+        {
+            commandList.Clear();
+
+            _invokator.Stop();
+            _invokedMethods.Clear();
+        }
+
+        /// <summary>
+        /// Метод для создания сетки и робота 
+        /// </summary>
+        /// <param name="rowCount">количество строк</param>
+        /// <param name="columnCount">количество столбцов</param>
+        /// <param name="rowPoint">местоположение робота в строке</param>
+        /// <param name="columnPoint">местоположение робота в столбце</param>
+        public void CreateGrid(int rowCount, int columnCount, int rowPoint, int columnPoint)
+        {
+            _robot = new Robot { Row = rowPoint, Column = columnPoint };
+            _grid = new Grid { RowCount = rowCount, ColumnCount = columnCount, Cells = new Cell[rowCount, columnCount] };
+            var initCommand = new InitializeEmulationCommand(_grid, _robot);
+            _visibleGrid.Children.Clear();
+            _manager = new EmulatorManager(_visibleGrid, _grid.Cells, rowCount, columnCount);
+            _visibleRobot = _robotInitializer.CreateRobot(Colors.Coral);
+            _manager.AddRobot(_visibleRobot, rowPoint, columnPoint);
         }
 
         #endregion
@@ -94,82 +172,61 @@ namespace Emulator.Interpreters
         {
             BaseRobotCommand command = null;
 
-            if (source.CommandName == AttributeManager.GetDescription(typeof(InitializeCommandModel)))
+            switch ((CommandName)source.CurrentName)
             {
-                InitializeCommandModel model = CommandModelMapper.GetInitializeCommandModel(source);
+                case CommandName.Move:
+                    MoveCommandModel moveModel = CommandModelMapper.GetMoveCommandModel(source);
+                    var moveCommand = new MoveRobotCommand(_grid, _robot, moveModel.CellCount);
+                    moveCommand.MoveRobotEvent += MoveCommandOnExecuteEvent;
+                    command = moveCommand;
+                    _commands.Add(command);
 
-                _grid = new Grid { RowCount = model.RowCount, ColumnCount = model.ColumnCount, Cells = new Cell[model.RowCount, model.ColumnCount]};
-                _robot = new Robot { Row = model.RowPoint, Column = model.ColumnPoint };
+                    break;
 
-                var initCommand = new InitializeEmulationCommand(_grid, _robot);
-                initCommand.CreateEmulatorEvent += InitCommandOnExecuteEvent;
+                case CommandName.Rotation:
+                    RotationCommandModel rotationModel = CommandModelMapper.GetRotationCommandModel(source);
+                    var rotationCommand = new RotationRobotCommand(_robot, rotationModel.Route);
+                    rotationCommand.RotateRobotEvent += RotationCommandOnRotateRobot;
+                    command = rotationCommand;
+                    _commands.Add(command);
 
-                command = initCommand;
-            }
+                    break;
 
-            if (source.CommandName == AttributeManager.GetDescription(typeof(MoveCommandModel)))
-            {
-                MoveCommandModel model = CommandModelMapper.GetMoveCommandModel(source);
+                case CommandName.Pouring:
+                    PouringCellCommandModel pouringModel = CommandModelMapper.GetPouringCommandModel(source);
+                    var pouringCommand = new PouringCellCommand(_grid, _robot, pouringModel.CellColor);
+                    pouringCommand.PouringCellEvent += PouringCommandOnPouringCellEvent;
+                    command = pouringCommand;
+                    _commands.Add(command);
 
-                var moveCommand = new MoveRobotCommand(_grid, _robot, model.CellCount);
-                moveCommand.MoveRobotEvent += MoveCommandOnExecuteEvent;
-                
-                command = moveCommand;
-            }
+                    break;
 
-            if (source.CommandName == AttributeManager.GetDescription(typeof(RotationCommandModel)))
-            {
-                RotationCommandModel model = CommandModelMapper.GetRotationCommandModel(source);
+                case CommandName.Learn:
+                    LearnCellCommandModel learnCellModel = CommandModelMapper.GetLearnCellCommandModel(source);
+                    var learnCellCommand = new LearnCellCommand(_commands, _grid, _robot, 
+                        learnCellModel.CommandIdIfCellColorBlack, learnCellModel.CommandIdIfCellColorWhite);
+                    command = learnCellCommand;
+                    _commands.Add(command);
 
-                var rotationCommand = new RotationRobotCommand(_robot, model.Route);
-                rotationCommand.RotateRobotEvent += RotationCommandOnRotateRobot;
-
-                command = rotationCommand;
-            }
-
-            if (source.CommandName == AttributeManager.GetDescription(typeof(PouringCellCommandModel)))
-            {
-                PouringCellCommandModel model = CommandModelMapper.GetPouringCommandModel(source);
-
-                var pouringCommand = new PouringCellCommand(_grid, _robot, model.CellColor);
-                pouringCommand.PouringCellEvent += PouringCommandOnPouringCellEvent;
-
-                command = pouringCommand;
+                    break;
             }
 
             return command;
         }
-
+       
         #endregion
 
         #region Обработчики событий выполнения команд
 
         /// <summary>
-        /// Обработчик события инициализации эмулятора
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="eventArgs"></param>
-        private void InitCommandOnExecuteEvent(object sender, InitializeEmulationEventArgs eventArgs)
-        {
-            _visibleGrid.Children.Clear();
-
-            var robotInitializer = new RobotInitializer();
-            _manager = new EmulatorManager(_visibleGrid, eventArgs.Cells, eventArgs.RowCount, eventArgs.ColumnCount);
-
-            var sizeRobot = (int) _visibleGrid.Width / eventArgs.RowCount;
-
-            _visibleRobot = robotInitializer.CreateRobot(sizeRobot, Colors.Coral);
-            _manager.AddRobot(_visibleRobot, eventArgs.RowPoint, eventArgs.ColumnPoint);
-        }
-
-        /// <summary>
         /// Обработчик события движения робота
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="eventArgs"></param>
-        private void MoveCommandOnExecuteEvent(object sender, MoveRobotEventArgs eventArgs)
+        /// <param name="moveRobotEventArgs"></param>
+        private void MoveCommandOnExecuteEvent(object sender, MoveRobotEventArgs moveRobotEventArgs)
         {
-            _manager.UpdatePointRobot(_visibleRobot, eventArgs.Row, eventArgs.Column);
+            _invokeMethod = () => _manager.UpdatePointRobot(_visibleRobot, moveRobotEventArgs.Row, moveRobotEventArgs.Column);
+            _invokedMethods.Enqueue(_invokeMethod);
         }
 
         /// <summary>
@@ -179,12 +236,35 @@ namespace Emulator.Interpreters
         /// <param name="rotationRobotEventArgs"></param>
         private void RotationCommandOnRotateRobot(object sender, RotationRobotEventArgs rotationRobotEventArgs)
         {
-
+            _invokeMethod = () => _manager.RotationRobot(_visibleRobot, rotationRobotEventArgs.RouteMove);
+            _invokedMethods.Enqueue(_invokeMethod);
         }
 
+        /// <summary>
+        /// Обработчик события заливки ячейки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="pouringCellEventArgs"></param>
         private void PouringCommandOnPouringCellEvent(object sender, PouringCellEventArgs pouringCellEventArgs)
         {
-            _manager.UpdateColorCell(pouringCellEventArgs.Color, pouringCellEventArgs.Row, pouringCellEventArgs.Column);
+            _invokeMethod = () => _manager.UpdateColorCell(pouringCellEventArgs.Color, pouringCellEventArgs.Row, pouringCellEventArgs.Column);
+            _invokedMethods.Enqueue(_invokeMethod);
+        }
+
+        /// <summary>
+        /// Обработчик события для вызова команд из очереди
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void timer_tick(object sender, EventArgs args)
+        {
+            if (_invokedMethods?.Count == 0)
+            {
+                _invokator.Stop();
+                return;
+            }
+
+            _invokedMethods?.Dequeue().Invoke();
         }
 
         #endregion

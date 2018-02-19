@@ -1,32 +1,109 @@
-﻿namespace Emulator.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Emulator.ViewModels.Base;
+using Emulator.ViewModels.Enumerables;
+using Emulator.ViewModels.ModelsForView;
+using RobotObjects.Enumerables;
+
+namespace Emulator.Models
 {
     /// <summary>
-    /// Класс представляющий модель команды для списка выполняющихся команд
+    /// Модель для интерфейса команд
     /// </summary>
-    public class CommandModel
+    public class CommandModel : BaseViewModel
     {
-        #region Открытые свойства
+        private int _id;
+        private int _currentName;
 
-        /// <summary>
-        /// Номер команды
-        /// </summary>
-        public int CommandId { get; set; }
+        public int CommandId
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                CommandSelector((CommandName)CurrentName, value);
+            }
+        }
+        public int CurrentName
+        {
+            get => _currentName;
+            set
+            {
+                if (value != _currentName)
+                {
+                    CommandSelector((CommandName)value, CommandId);
+                    _currentName = value;
+                }
+            }
+        }
+        public int CurrentOneParameter { get; set; }
+        public int CurrentTwoParameter { get; set; }
 
-        /// <summary>
-        /// Назваение команды 
-        /// </summary>
-        public string CommandName { get; set; }
+        public List<BaseCombo> CommandNameSource { get; set; } = new List<BaseCombo>
+        {
+            new BaseCombo {Name = "Движение", Value = (int)CommandName.Move},
+            new BaseCombo {Name = "Поворот", Value = (int)CommandName.Rotation},
+            new BaseCombo {Name = "Заливка", Value = (int)CommandName.Pouring},
+            new BaseCombo {Name = "Изучение", Value = (int)CommandName.Learn}
+        };
+        public List<BaseCombo> OneParameterSource { get; set; }
+        public List<BaseCombo> TwoParameterSource { get; set; }
 
-        /// <summary>
-        /// Первый параметр команды 
-        /// </summary>
-        public string OneParameter { get; set; }
+        public void CommandSelector(CommandName name, int id)
+        {
+            var range = GenerateRowNumbers(0, id + 2);
 
-        /// <summary>
-        /// Второй параметр команды 
-        /// </summary>
-        public string TwoParameter { get; set; }
+            switch (name)
+            {
+                case CommandName.Move:
+                    OneParameterSource = GenerateRowNumbers(1, 100);
+                    TwoParameterSource = range;
+                    break;
 
-        #endregion
+                case CommandName.Pouring:
+                    OneParameterSource = GetColorCellSource();
+                    TwoParameterSource = range;
+                    break;
+
+                case CommandName.Rotation:
+                    OneParameterSource = GetRouteMoveSource();
+                    TwoParameterSource = range;
+                    break;
+
+                case CommandName.Learn:
+                    OneParameterSource = range;
+                    TwoParameterSource = range;
+                    break;
+
+                default: throw new ArgumentException();
+            }
+
+            CurrentOneParameter = OneParameterSource[0].Value;
+            CurrentTwoParameter = TwoParameterSource[TwoParameterSource.Count - 1].Value;
+
+            OnPropertyChanged(nameof(CurrentOneParameter));
+            OnPropertyChanged(nameof(CurrentTwoParameter));
+        }
+        private List<BaseCombo> GetRouteMoveSource()
+        {
+            return new List<BaseCombo>
+            {
+                new BaseCombo{ Name = "Направо", Value = (int)RouteMove.Right},
+                new BaseCombo{ Name = "Налево", Value = (int)RouteMove.Left }
+            };
+        }
+        private List<BaseCombo> GetColorCellSource()
+        {
+            return new List<BaseCombo>
+            {
+                new BaseCombo { Name = "Черный", Value = (int)ColorCell.Black },
+                new BaseCombo { Name = "Белый", Value = (int)ColorCell.White}
+            };
+        }
+        private static List<BaseCombo> GenerateRowNumbers(int begin, int end)
+        {
+            return Enumerable.Range(begin, end - begin).Select(item => new BaseCombo { Name = item.ToString(), Value = item }).ToList();
+        }
     }
 }

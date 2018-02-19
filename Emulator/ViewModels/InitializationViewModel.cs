@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
 using Emulator.Commands.Base;
-using Emulator.Mappers;
-using Emulator.Models;
+using Emulator.Interpreters;
 using Emulator.ViewModels.Base;
-using Emulator.ViewModels.Helpers;
+using Emulator.ViewModels.ModelsForView;
 
 namespace Emulator.ViewModels
 {
@@ -17,16 +16,6 @@ namespace Emulator.ViewModels
         #region Закрытые поля
 
         /// <summary>
-        /// Источник данных предоставляющий выбор количества столбцов в сетке
-        /// </summary>
-        //private readonly List<int> _columnsSource;
-
-        /// <summary>
-        /// Список команд выполняемых роботом
-        /// </summary>
-        private readonly ObservableCollection<CommandModel> _commandList;
-
-        /// <summary>
         /// Количество строк в сетке
         /// </summary>
         private int _rowCount;
@@ -36,14 +25,10 @@ namespace Emulator.ViewModels
         /// </summary>
         private int _columnCount;
 
-        #region Для команд
-
         /// <summary>
-        /// Поле для команды добавления команды инициализации в список команд
+        /// Интерпретатор команд
         /// </summary>
-        private BaseCommandRelay _addInicializationCommandInList;
-
-        #endregion
+        private readonly CommandInterpreter _interpreter;
 
         #endregion
 
@@ -60,12 +45,16 @@ namespace Emulator.ViewModels
                 if (_rowCount != value)
                 {
                     _rowCount = value;
-                    RowGenerator.Initialize(RowPointsSource, 0, value, 1);
-                    RowPoint = RowPointsSource[0];
+                    RowPointsSource = GetSource(1, value-1);
+                    RowPoint = RowPointsSource[0].Value;
                     OnPropertyChanged(nameof(RowPoint));
                 }
-            } 
+            }
         }
+        /// <summary>
+        /// Источник данных для выбора количества строк
+        /// </summary>
+        public List<BaseCombo> RowsSource { get; }
 
         /// <summary>
         /// Количество столбцов в сетке
@@ -78,52 +67,34 @@ namespace Emulator.ViewModels
                 if (_columnCount != value)
                 {
                     _columnCount = value;
-                    RowGenerator.Initialize(ColumnPointsSource, 0, value, 1);
-                    ColumnPoint = ColumnPointsSource[0];
+                    ColumnPointsSource = GetSource(1, value - 1);
+                    ColumnPoint = ColumnPointsSource[0].Value;
                     OnPropertyChanged(nameof(ColumnPoint));
                 }
             }
         }
+        /// <summary>
+        /// Источник для выбора количества столбцов
+        /// </summary>
+        public List<BaseCombo> ColumnsSource { get; }
 
         /// <summary>
         /// Начальное положение робота (столбец)
         /// </summary>
         public int RowPoint { get; set; }
+        /// <summary>
+        /// Источник для выбора строки начального положения робота
+        /// </summary>
+        public List<BaseCombo> RowPointsSource { get; set; }
 
         /// <summary>
         /// Начальное положение робота (столбец)
         /// </summary>
         public int ColumnPoint { get; set; }
-
-        /// <summary>
-        /// Номер следующий команды
-        /// </summary>
-        public int NextCommandNumber { get; set; }
-
-        /// <summary>
-        /// Источник для выбора количества строк в сетке
-        /// </summary>
-        public List<int> RowsSource { get; }
-
-        /// <summary>
-        /// Источник для выбора количества столбцов
-        /// </summary>
-        public List<int> ColumnsSource { get; }
-        
-        /// <summary>
-        /// Источник номеров команд для выбора номера следующей команды
-        /// </summary>
-        public List<int> NextCommandSource { get; set; }
-
-        /// <summary>
-        /// Источник для выбора строки начального положения робота
-        /// </summary>
-        public ObservableCollection<int> RowPointsSource { get; }
-
         /// <summary>
         /// Источник для выбора столбца начального положения робота
         /// </summary>
-        public ObservableCollection<int> ColumnPointsSource { get; }
+        public List<BaseCombo> ColumnPointsSource { get; set; }
 
         #endregion
 
@@ -133,53 +104,49 @@ namespace Emulator.ViewModels
         /// Конструктор по умолчению
         /// <param name="commandList">список команд выполняемых роботом</param>
         /// </summary>
-        public InitializationViewModel(ObservableCollection<CommandModel> commandList)
+        public InitializationViewModel(CommandInterpreter interpreter)
         {
-            _commandList = commandList;
+            _interpreter = interpreter;
 
-            RowsSource = new List<int>(); RowGenerator.Initialize(RowsSource, 10, 100, 1);
-            ColumnsSource = new List<int>(); RowGenerator.Initialize(ColumnsSource, 10, 100, 1);
-            RowPointsSource = new ObservableCollection<int>();
-            ColumnPointsSource = new ObservableCollection<int>();
+            RowsSource = GetSource(10, 100);
+            ColumnsSource = RowsSource;
 
-            NextCommandNumber = 1;
-            NextCommandSource = new List<int> {0, 1};
+            CreateGridCommand = new BaseCommandRelay(CreateGrid);
         }
 
         #endregion
+
+        /// <summary>
+        /// Метод генерации чисел для источников
+        /// </summary>
+        /// <param name="begin">начало интервала</param>
+        /// <param name="end">коней интервала</param>
+        /// <returns></returns>
+        private List<BaseCombo> GetSource(int begin, int end)
+        {
+            return Enumerable.Range(begin, end - begin).Select(item => new BaseCombo{Name = item.ToString(), Value = item}).ToList();
+        }
 
         #region Команды 
 
         /// <summary>
-        /// Команда инициализации сетки для робота
+        /// Команда создания сетки
         /// </summary>
-        public BaseCommandRelay AddInicializationCommandInList => 
-            _addInicializationCommandInList ?? (_addInicializationCommandInList = new BaseCommandRelay(AddInicializationCommand));
-
-        #region Методы для команд
-
-        /// <summary>
-        /// Метод добавляющий строку команды инициализации в список выполняемых команд
-        /// </summary>
-        /// <param name="obj"></param>
-        private void AddInicializationCommand()
-        {
-            _commandList.Clear();
-
-            var initializeCommandModel = new InitializeCommandModel
-            {
-                RowCount = RowCount,
-                ColumnCount = ColumnCount,
-                RowPoint = RowPoint,
-                ColumnPoint = ColumnPoint,
-                NextCommandNumber = NextCommandNumber
-            };
-
-            _commandList.Add(ListModelMapper.GetCommand(initializeCommandModel));
-        }
-
-        #endregion 
+        public BaseCommandRelay CreateGridCommand { get; }
 
         #endregion
+
+        #region Методы
+
+        /// <summary>
+        /// Метод создания сетки
+        /// </summary>
+        private void CreateGrid(object parameter)
+        {
+            _interpreter.CreateGrid(RowCount, ColumnCount, RowPoint, ColumnPoint);
+        }
+
+        #endregion
+
     }
 }

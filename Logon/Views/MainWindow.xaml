@@ -35,9 +35,7 @@
                             </Grid.RowDefinitions>
 
                             <Label Grid.Row="0" Content="{Binding FullName}" Foreground="Black"/>
-
                             <Label Grid.Row="1" Content="{Binding DateBirth, Converter={StaticResource DateTimeConverter}}" Foreground="Black"/>
-
                         </Grid>
                     </StackPanel>
                 </StackPanel>

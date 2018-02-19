@@ -45,6 +45,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotObjects", "RobotObjects\RobotObjects.csproj", "{B9C396F6-2B98-4DB9-A115-88BA1A8FA359}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emulator", "Emulator\Emulator.csproj", "{7770DDCA-09F5-44AF-8481-C8F81168B5B9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B9C396F6-2B98-4DB9-A115-88BA1A8FA359} = {B9C396F6-2B98-4DB9-A115-88BA1A8FA359}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

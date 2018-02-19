@@ -51,6 +51,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Logon\bin\Debug\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -70,15 +74,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AttributeLogic\AttributeManager.cs" />
-    <Compile Include="AttributeLogic\Models\ValueDescriptionEnum.cs" />
-    <Compile Include="Converters\Base\BaseConverter.cs" />
-    <Compile Include="Converters\Base\BaseEnumConverter.cs" />
-    <Compile Include="Converters\ColorCellEnumToCollectionConverter.cs" />
-    <Compile Include="Converters\RouteMoveEnumToCollectionConverter.cs" />
     <Compile Include="Factories\EmulatorManager.cs" />
     <Compile Include="Factories\RobotInitializer.cs" />
     <Compile Include="Interpreters\CommandInterpreter.cs" />
-    <Compile Include="Invocators\CommandInvocator.cs" />
     <Compile Include="Mappers\CommandModelMapper.cs" />
     <Compile Include="Mappers\ListModelMapper.cs" />
     <Compile Include="Models\CommandModel.cs" />
@@ -90,14 +88,12 @@
     <Compile Include="ViewModels\CommandListManagerViewModel.cs" />
     <Compile Include="Commands\Base\BaseCommandRelay.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Enumerables\CommandName.cs" />
     <Compile Include="ViewModels\FileManagerViewModel.cs" />
     <Compile Include="ViewModels\InitializationViewModel.cs" />
     <Compile Include="ViewModels\Helpers\RowGenerator.cs" />
-    <Compile Include="ViewModels\LearnCellViewModel.cs" />
-    <Compile Include="ViewModels\MoveViewModel.cs" />
+    <Compile Include="ViewModels\ModelsForView\BaseCombo.cs" />
     <Compile Include="ViewModels\MainViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModels\PouringViewModel.cs" />
-    <Compile Include="ViewModels\RotationViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -121,6 +117,10 @@
     <Page Include="Styles\Canvaces.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\DataGrids.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\GroupBoxes.xaml">
       <Generator>MSBuild:Compile</Generator>

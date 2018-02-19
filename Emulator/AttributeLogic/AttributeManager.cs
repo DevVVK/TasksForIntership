@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using Emulator.AttributeLogic.Models;
 
 namespace Emulator.AttributeLogic
 {
@@ -53,7 +50,7 @@ namespace Emulator.AttributeLogic
         /// <typeparam name="TEnum">тип перечисления для переменной</typeparam>
         /// <param name="enumerable">тип перечисления</param>
         /// <returns></returns>
-        public static IEnumerable<ValueDescriptionEnum<TEnum>> GetValueDescriptionsFields<TEnum>()
+        /*public static IEnumerable<ValueDescriptionEnum<TEnum>> GetValueDescriptionsFields<TEnum>()
         {
             if(!typeof(TEnum).IsEnum)
                 throw new ArgumentException($"Тип {typeof(TEnum).Name} не является перечислением");
@@ -64,7 +61,7 @@ namespace Emulator.AttributeLogic
                 .Where(item => item.Description != null).ToList();
 
             return list;
-        }
+        }*/
 
         #endregion
 

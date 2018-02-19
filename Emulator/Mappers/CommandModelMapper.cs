@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
 using Emulator.Models;
+using Emulator.ViewModels.Enumerables;
 using RobotObjects.Enumerables;
-using static Emulator.AttributeLogic.AttributeManager;
 
 namespace Emulator.Mappers
 {
@@ -26,45 +24,20 @@ namespace Emulator.Mappers
         #region Открытые методы
 
         /// <summary>
-        /// Метод получающий модель команды инииализации <see cref="InitializeCommandModel"/>
-        /// </summary>
-        /// <param name="source">источник данных <see cref="CommandModel"/></param>
-        /// <returns></returns>
-        public static InitializeCommandModel GetInitializeCommandModel(CommandModel source)
-        {
-            if (source.CommandName != GetDescription(typeof(InitializeCommandModel)))
-                throw new ArgumentException(GetMessage("инициализации"));
-
-            string[] elements = source.OneParameter.Split(',', ';', '[', ']', ' ').Where(item => Regex.IsMatch(item, $"[0-9]")).ToArray(); 
-
-            var initializeCommandModel = new InitializeCommandModel
-            {
-                Id = source.CommandId,
-                RowCount = Convert.ToInt32(elements[0]),
-                ColumnCount = Convert.ToInt32(elements[1]),
-                RowPoint = Convert.ToInt32(elements[2]),
-                ColumnPoint = Convert.ToInt32(elements[3]),
-                NextCommandNumber = Convert.ToInt32(source.TwoParameter)
-            };
-
-            return initializeCommandModel;
-        }
-
-        /// <summary>
         /// Метод получающий модель команды движения робота <see cref="MoveCommandModel"/>
         /// </summary>
         /// <param name="source">источник данных <see cref="CommandModel"/></param>
         /// <returns></returns>
         public static MoveCommandModel GetMoveCommandModel(CommandModel source)
         {
-            if (source.CommandName != GetDescription(typeof(MoveCommandModel)))
+            if ((CommandName)source.CurrentName != CommandName.Move)
                 throw new ArgumentException(GetMessage("движения"));
 
             var moveCommandModel = new MoveCommandModel
             {
                 Id = source.CommandId,
-                CellCount = Convert.ToInt32(source.OneParameter),
-                NextCommandNumber = Convert.ToInt32(source.TwoParameter)
+                CellCount = source.CurrentOneParameter,
+                NextCommandNumber = source.CurrentTwoParameter
             };
 
             return moveCommandModel;
@@ -73,22 +46,18 @@ namespace Emulator.Mappers
         /// <summary>
         /// Метод получающий модель команды поворота робота <see cref="RotationCommandModel"/>
         /// </summary>
-        /// <param name="source">источник данных <see cref="RotationCommandModel"/></param>
+        /// <param name="source">источник данных <see cref="CommandModel"/></param>
         /// <returns></returns>
         public static RotationCommandModel GetRotationCommandModel(CommandModel source)
         {
-            if (source.CommandName != GetDescription(typeof(RotationCommandModel)))
+            if ((CommandName)source.CurrentName != CommandName.Rotation)
                 throw new ArgumentException(GetMessage("поворота"));
-
-            // ReSharper disable once PossibleNullReferenceException
-            RouteMove route = GetValueDescriptionsFields<RouteMove>()
-                .FirstOrDefault(item => item.Description == source.OneParameter).Value;
 
             var rotationCommandModel = new RotationCommandModel
             {
                 Id = source.CommandId,
-                Route = route,
-                NextCommandId = Convert.ToInt32(source.TwoParameter)
+                Route = (RouteMove)source.CurrentOneParameter,
+                NextCommandId = source.CurrentTwoParameter
             };
 
             return rotationCommandModel;
@@ -101,21 +70,37 @@ namespace Emulator.Mappers
         /// <returns></returns>
         public static PouringCellCommandModel GetPouringCommandModel(CommandModel source)
         {
-            if (source.CommandName != GetDescription(typeof(PouringCellCommandModel)))
+            if ((CommandName)source.CurrentName != CommandName.Pouring)
                 throw new ArgumentException(GetMessage("заливки"));
-
-            // ReSharper disable once PossibleNullReferenceException
-            ColorCell color = GetValueDescriptionsFields<ColorCell>()
-                .FirstOrDefault(item => item.Description == source.OneParameter).Value;
 
             var pouringCellCommandModel = new PouringCellCommandModel
             {
                 Id = source.CommandId,
-                CellColor = color,
-                NextCommandId = Convert.ToInt32(source.TwoParameter)
+                CellColor = (ColorCell)source.CurrentOneParameter,
+                NextCommandId = source.CurrentTwoParameter
             };
 
             return pouringCellCommandModel;
+        }
+  
+        /// <summary>
+        /// Метод получающий модель команды изучения цвета ячейки, на которой находится робот <see cref="LearnCellCommandModel"/>
+        /// </summary>
+        /// <param name="source">источник данных <see cref="CommandModel"/></param>
+        /// <returns></returns>
+        public static LearnCellCommandModel GetLearnCellCommandModel(CommandModel source)
+        {
+            if ((CommandName)source.CurrentName != CommandName.Learn)
+                throw new ArgumentException(GetMessage("изучения"));
+
+            var learnCellModel = new LearnCellCommandModel
+            {
+                Id = source.CommandId,
+                CommandIdIfCellColorBlack = source.CurrentOneParameter,
+                CommandIdIfCellColorWhite = source.CurrentTwoParameter
+            };
+
+            return learnCellModel;
         }
 
         #endregion

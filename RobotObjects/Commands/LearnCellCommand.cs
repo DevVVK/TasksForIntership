@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using RobotObjects.Commands.Base;
 using RobotObjects.Enumerables;
 using RobotObjects.Objects;
@@ -40,7 +41,7 @@ namespace RobotObjects.Commands
         /// <param name="numberCommandIfBlackColor">номер команды, к которой нужно перейти если цвет ячейки черный</param>
         /// <param name="numberCommandIfWhiteColor">номер команды, к которой нужно перейти если цвет ячейки белый</param>
         public LearnCellCommand(List<BaseRobotCommand> commandList, Grid grid, Robot robot, 
-                                int numberCommandIfBlackColor, int numberCommandIfWhiteColor)
+            int numberCommandIfBlackColor, int numberCommandIfWhiteColor)
         {
             Grid = grid;
             Robot = robot;
@@ -65,19 +66,8 @@ namespace RobotObjects.Commands
 
             switch (color)
             {
-                case ColorCell.Black:
-                    for (var commandIndex = _numberCommandIfBlackColor; commandIndex < _commandList.Count; commandIndex++)
-                    {
-                        _commandList[commandIndex].ExecuteMethod();
-                    }
-                    break;
-
-                case ColorCell.White:
-                    for (var commandIndex = _numberCommandIfWhiteColor; commandIndex < _commandList.Count; commandIndex++)
-                    {
-                        _commandList[commandIndex].ExecuteMethod();
-                    }
-                    break;
+                case ColorCell.Black: InvokeMethods(_commandList, _numberCommandIfBlackColor); break;
+                case ColorCell.White: InvokeMethods(_commandList, _numberCommandIfWhiteColor); break;
             }
         }
 
@@ -86,6 +76,24 @@ namespace RobotObjects.Commands
         /// </summary>
         /// <returns></returns>
         private ColorCell GetColorCell(int row, int column) => Grid.Cells[row, column].Color;
+
+        /// <summary>
+        /// Метод для вызова команд из списка команд с заданнымм началом выполнения 
+        /// </summary>
+        /// <param name="commandList">список команд</param>
+        /// <param name="beginIndex">индекс начала выполнения списка</param>
+        private void InvokeMethods(List<BaseRobotCommand> commandList, int beginIndex)
+        {
+            try
+            {
+                var rangeCount = commandList.Count - beginIndex < 0 ? 0 : commandList.Count - beginIndex;
+                commandList.GetRange(beginIndex - 1, rangeCount).ForEach(item => item.ExecuteMethod());
+            }
+            catch (StackOverflowException exception)
+            {
+                throw;
+            }
+        }
 
         #endregion
     }

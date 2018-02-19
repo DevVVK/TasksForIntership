@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using RobotObjects.Objects;
 
 namespace RobotObjects.Commands.Base
@@ -14,7 +15,7 @@ namespace RobotObjects.Commands.Base
         /// Ссылка на вызываемый метод команды
         /// </summary>
         protected Action Execute { get; set; }
-
+         
         /// <summary>
         /// Робот-исполнитель
         /// </summary>
@@ -24,7 +25,7 @@ namespace RobotObjects.Commands.Base
         /// Сетка, в которой перемещается робот
         /// </summary>
         protected Grid Grid { get; set; }
-     
+
         #endregion
 
         #region Методы 
@@ -36,4 +37,4 @@ namespace RobotObjects.Commands.Base
      
         #endregion
     }
-}
+} 

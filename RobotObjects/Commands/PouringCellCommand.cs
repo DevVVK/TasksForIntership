@@ -70,9 +70,7 @@ namespace RobotObjects.Commands
         {
             Grid = grid;
             Robot = robot;
-
             _pouringColor = pouringColor;
-
             Execute = PouringCell;
         }
 
@@ -88,9 +86,10 @@ namespace RobotObjects.Commands
             //извлечение ячейки на которой стоит робот
             var cell = Grid.Cells[Robot.Row, Robot.Column];
 
+            if (cell == null) return;
+            
             //изменение цвета
-            if (cell == null) return; cell.Color = _pouringColor;
-
+            cell.Color = _pouringColor;
             OnExecuteEvent(this, new PouringCellEventArgs(Robot.Row, Robot.Column, cell.Color));
         }
 

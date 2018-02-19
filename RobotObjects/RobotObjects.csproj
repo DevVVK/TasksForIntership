@@ -45,10 +45,10 @@
     <Compile Include="Base\BaseMove.cs" />
     <Compile Include="Commands\Base\BaseEmulationCommand.cs" />
     <Compile Include="Commands\Base\BaseRobotCommand.cs" />
-    <Compile Include="EmulationEventArgs\InitializeEmulationEventArgs.cs" />
     <Compile Include="EmulationEventArgs\MoveRobotEventArgs.cs" />
     <Compile Include="EmulationEventArgs\PouringCellEventArgs.cs" />
     <Compile Include="EmulationEventArgs\RotationRobotEventArgs.cs" />
+    <Compile Include="Exceptions\NotIsMoveInCellException.cs" />
     <Compile Include="Objects\Cell.cs" />
     <Compile Include="Commands\InitializeEmulationCommand.cs" />
     <Compile Include="Commands\LearnCellCommand.cs" />

@@ -13,7 +13,7 @@ namespace Emulator.Commands.Base
         /// <summary>
         /// Делегат принимающий обработчик команды
         /// </summary>
-        private readonly Action _execute;
+        private readonly Action<object> _execute;
 
         /// <summary>
         /// Делегат принимающий обработчик проверяющий условие выполнения команды
@@ -29,7 +29,7 @@ namespace Emulator.Commands.Base
         /// </summary>
         /// <param name="execute">команда</param>
         /// <param name="canExecute">условие выполнения</param>
-        public BaseCommandRelay(Action execute, Func<object, bool> canExecute = null)
+        public BaseCommandRelay(Action<object> execute, Func<object, bool> canExecute = null)
         {
             _execute = execute;
             _canExecute = canExecute;
@@ -55,7 +55,7 @@ namespace Emulator.Commands.Base
         /// <param name="parameter">параметр выполнения</param>
         public void Execute(object parameter)
         {
-            _execute();
+            _execute(parameter);
         }
 
         /// <summary>

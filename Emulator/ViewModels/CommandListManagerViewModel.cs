@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading;
-using System.Windows.Controls;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
 using Emulator.Commands.Base;
 using Emulator.Interpreters;
 using Emulator.Models;
 using Emulator.ViewModels.Base;
-using RobotObjects.Commands.Base;
 
 namespace Emulator.ViewModels
 {
@@ -15,42 +12,17 @@ namespace Emulator.ViewModels
     /// </summary>
     public class CommandListManagerViewModel : BaseViewModel
     {
-        #region Закрытые свойства
+        #region Открытые свойства
 
         /// <summary>
         /// Список команд выполняемых роботом
         /// </summary>
-        private ObservableCollection<CommandModel> _commandList;
+        private readonly CommandInterpreter _interpreter;
 
         /// <summary>
-        /// Ссылка на визуальную сетку
+        /// Спиосок команд
         /// </summary>
-        private Grid _visualGrid;
-
-        /// <summary>
-        /// Интерпретатор команд
-        /// </summary>
-        private CommandInterpreter _manager;
-
-        /// <summary>
-        /// Список объектов команды
-        /// </summary>
-        private List<BaseRobotCommand> _readyCommandList;
-
-        /// <summary>
-        /// Поле для команды запуска робота-исполнителя
-        /// </summary>
-        private BaseCommandRelay _startEmulationCommand;
-
-        /// <summary>
-        /// Поле для команды пошагового выполнения списка команд
-        /// </summary>
-        private BaseCommandRelay _startStepEmulationCommand;
-
-        /// <summary>
-        /// Поле для команды очистки списка команд
-        /// </summary>
-        private BaseCommandRelay _clearListCommand;
+        public ObservableCollection<CommandModel> CommandListInterface { get; }
 
         #endregion
 
@@ -59,13 +31,17 @@ namespace Emulator.ViewModels
         /// <summary>
         /// Конструктор по умолчению
         /// </summary>
-        /// <param name="commandList">спико комманд вы полняемых роботом</param>
-        /// <param name="grid">визуальная сетка</param>
-        public CommandListManagerViewModel(ObservableCollection<CommandModel> commandList, Grid grid)
+        /// <param name="interpreter">интерпретатор команд</param>
+        public CommandListManagerViewModel(CommandInterpreter interpreter)
         {
-            _visualGrid = grid;
-            _commandList = commandList;
-            _readyCommandList = new List<BaseRobotCommand>();
+            CommandListInterface = new ObservableCollection<CommandModel>();
+            _interpreter = interpreter;
+            _interpreter.CommandList = CommandListInterface;
+            AddCommand = new BaseCommandRelay(AddCommandInList);
+            StartEmulationCommand = new BaseCommandRelay(StartEmulation);
+            StartStepEmulationCommand = new BaseCommandRelay(StartStepEmulation);
+            ClearListCommand = new BaseCommandRelay(ClearList);
+            RemoveCommand = new BaseCommandRelay(RemoveCommandFromList);
         }
 
         #endregion
@@ -73,44 +49,70 @@ namespace Emulator.ViewModels
         #region Команды
 
         /// <summary>
+        /// Команда для добавления команды в список команд
+        /// </summary>
+        public BaseCommandRelay AddCommand { get; }
+
+        /// <summary>
         /// Команда запускающая исполнение список команд
         /// </summary>
-        public BaseCommandRelay StartEmulationCommand =>
-            _startEmulationCommand ?? (_startEmulationCommand = new BaseCommandRelay(StartEmulation));
+        public BaseCommandRelay StartEmulationCommand { get; }
 
         /// <summary>
         /// Команда запускающая пошаговое выполнение списка команд
         /// </summary>
-        public BaseCommandRelay StartStepEmulationCommand => 
-            _startStepEmulationCommand ?? (_startStepEmulationCommand = new BaseCommandRelay(StartStepEmulation));
+        public BaseCommandRelay StartStepEmulationCommand { get; }
 
         /// <summary>
         /// Команда очищающая список команд
         /// </summary>
-        public BaseCommandRelay ClearListCommand =>
-            _clearListCommand ?? (_clearListCommand = new BaseCommandRelay(ClearList));
+        public BaseCommandRelay ClearListCommand { get; }
+
+        /// <summary>
+        /// Команда удаления команды из списка
+        /// </summary>
+        public BaseCommandRelay RemoveCommand { get; }
 
         #endregion
 
         #region Методы 
 
         /// <summary>
+        /// Метод для удаления команды из списка
+        /// </summary>
+        /// <param name="parameter"></param>
+        private void RemoveCommandFromList(object parameter)
+        {
+            if (!(parameter is int id)) return;
+            var removeModel = CommandListInterface.First(item => item.CommandId == id);
+
+            CommandListInterface.Remove(removeModel);
+        }
+
+        /// <summary>
+        /// Метод для добавления команды в список команд
+        /// </summary>
+        private void AddCommandInList(object parameter)
+        {
+            var model = new CommandModel();
+            CommandListInterface.Add(model);
+
+            var index = CommandListInterface.Max(item => item.CommandId);
+            model.CommandId = ++index;
+        }
+
+        /// <summary>
         /// Метод запускающий выполнение команд с шагом в 1 секунду
         /// </summary>
-        private void StartEmulation()
+        private void StartEmulation(object parameter)
         {
-            _manager = new CommandInterpreter(_commandList, _visualGrid);
-
-            foreach (var command in _manager.GetCommandList())
-            {
-                command.ExecuteMethod();
-            }
+            _interpreter.StartInvoked();
         }
 
         /// <summary>
         /// Метод запускающий пошаговое выполнение команд
         /// </summary>
-        private void StartStepEmulation()
+        private void StartStepEmulation(object parameter)
         {
 
         }
@@ -118,7 +120,7 @@ namespace Emulator.ViewModels
         /// <summary>
         /// Метод очищающий список команд
         /// </summary>
-        private void ClearList()
+        private void ClearList(object parameter)
         {
 
         }

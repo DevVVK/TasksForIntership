@@ -2,6 +2,7 @@
 using RobotObjects.Commands.Base;
 using RobotObjects.EmulationEventArgs;
 using RobotObjects.Enumerables;
+using RobotObjects.Exceptions;
 using RobotObjects.Objects;
 
 namespace RobotObjects.Commands
@@ -62,11 +63,6 @@ namespace RobotObjects.Commands
         /// </summary>
         private readonly int _cellCount;
 
-        /// <summary>
-        /// Направление движения робота
-        /// </summary>
-        private readonly RouteMove _routeMoveRobot;
-
         #endregion
 
         #region Конструкторы
@@ -82,7 +78,7 @@ namespace RobotObjects.Commands
             Grid = grid;
             Robot = robot;
             _cellCount = cellCount;
-            _routeMoveRobot = Robot.RouteMove;
+
             Execute = Move;
         }
 
@@ -91,48 +87,62 @@ namespace RobotObjects.Commands
         #region Методы
 
         /// <summary>
-        /// Команда движения на указанное количество клеток
+        /// Метод для перемещения робота по указанному направлению
         /// </summary>
         private void Move()
         {
-            switch (_routeMoveRobot)
+            switch (Robot.RouteMove)
             {
-                case RouteMove.Right:
-                    for (var index = 0; index < _cellCount; index++)
-                    {
-                        Robot.Column++;
-                        OnExecuteEvent(this, new MoveRobotEventArgs(Robot.Row, Robot.Column));
-                    }
-
-                    break;
-
-                case RouteMove.Top:
-                    for (var index = 0; index < _cellCount; index++)
-                    {
-                        Robot.Row--;
-                        OnExecuteEvent(this, new MoveRobotEventArgs(Robot.Row, Robot.Column));
-                    }
-
-                    break;
-
-                case RouteMove.Left:
-                    for (var index = 0; index < _cellCount; index++)
-                    {
-                        Robot.Column--;
-                        OnExecuteEvent(this, new MoveRobotEventArgs(Robot.Row, Robot.Column));
-                    }
-
-                    break;
-
-                case RouteMove.Bottom:
-                    for (var index = 0; index < _cellCount; index++)
-                    {
-                        Robot.Row++;
-                        OnExecuteEvent(this, new MoveRobotEventArgs(Robot.Row, Robot.Column));
-                    }
-
-                    break;
+                case RouteMove.Right: UpdateMove(Grid.Cells, Robot, _cellCount, () => Robot.Column++); break;
+                case RouteMove.Top: UpdateMove(Grid.Cells, Robot, _cellCount, () => Robot.Row--); break;
+                case RouteMove.Left: UpdateMove(Grid.Cells, Robot, _cellCount, () => Robot.Column--); break;
+                case RouteMove.Bottom: UpdateMove(Grid.Cells, Robot, _cellCount, () => Robot.Row++); break;
             }
+        }
+
+        /// <summary>
+        /// Метод для передвижения робота
+        /// </summary>
+        /// <param name="cells">сетка</param>
+        /// <param name="robot">робот</param>
+        /// <param name="cellCount">количество ячеек, на которое нужно переместить робота</param>
+        /// <param name="iteration">метод изменения индекса строки или столбца</param>
+        private void UpdateMove(Cell[,] cells, Robot robot, int cellCount, Action iteration)
+        {
+            for (var index = 0; index < cellCount; index++)
+            {
+                CheckCellOnMove(cells, robot);
+                iteration?.Invoke();
+                OnExecuteEvent(this, new MoveRobotEventArgs(Robot.Row, Robot.Column));
+            }
+        }
+
+        /// <summary>
+        /// Метод для проверки проходимости ячейки по указанному напрпавлению 
+        /// </summary>
+        /// <param name="cells">сетка</param>
+        /// <param name="robot">робот</param>
+        private void CheckCellOnMove(Cell[,] cells, Robot robot)
+        {
+            switch (robot.RouteMove)
+            {
+                case RouteMove.Right: CheckInException(cells, robot.Row, robot.Column + 1); break;
+                case RouteMove.Left: CheckInException(cells, robot.Row, robot.Column - 1); break;
+                case RouteMove.Top: CheckInException(cells, robot.Row - 1, robot.Column); break;
+                case RouteMove.Bottom: CheckInException(cells, robot.Row + 1, robot.Column); break;
+            }
+        }
+
+        /// <summary>
+        /// Метод для проверки проходимости ячейки, если ячейка на проходимя, 
+        /// то выбрасывается искючение см. <see cref="NotIsMoveInCellException"/> 
+        /// </summary>
+        /// <param name="cells">сетка</param>
+        /// <param name="row">индекс строки ячейкистрока</param>
+        /// <param name="column">индекс столбца ячейки</param>
+        private void CheckInException(Cell[,] cells, int row, int column)
+        {
+            if (!cells[row, column].IsMove) throw new NotIsMoveInCellException();
         }
 
         #endregion
