@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
@@ -94,8 +93,8 @@ namespace Emulator.Interpreters
             _visibleGrid = visibleGrid;
             _commands = new List<BaseRobotCommand>();
             _robotInitializer = new RobotInitializer();
-            _invokator = new DispatcherTimer{ Interval = new TimeSpan(0,0,1) };
             _invokedMethods = new Queue<Action>();
+            _invokator = new DispatcherTimer(new TimeSpan(0,0,1), DispatcherPriority.Normal, CreateQueueCommands, Dispatcher.CurrentDispatcher);
             _invokator.Tick += timer_tick;
         }
 
@@ -109,15 +108,6 @@ namespace Emulator.Interpreters
         /// <param name="commandList">список выполняемых команд</param>
         public void StartInvoked()
         {
-            try
-            {
-                CommandList.Select(GetCommand).ToList().ForEach(item => item.ExecuteMethod());
-            }
-            catch (NotIsMoveInCellException exception)
-            {
-                _invokator.Start(); return;
-            }
-
             _invokator.Start();
         }
 
@@ -251,6 +241,8 @@ namespace Emulator.Interpreters
             _invokedMethods.Enqueue(_invokeMethod);
         }
 
+        private int _commandIndex;
+
         /// <summary>
         /// Обработчик события для вызова команд из очереди
         /// </summary>
@@ -260,11 +252,34 @@ namespace Emulator.Interpreters
         {
             if (_invokedMethods?.Count == 0)
             {
-                _invokator.Stop();
                 return;
             }
 
             _invokedMethods?.Dequeue().Invoke();
+        }
+
+        /// <summary>
+        /// Метод для формирования очереди команд
+        /// </summary>
+        private void CreateQueueCommands(object sender, EventArgs args)
+        {
+            if (CommandList.Count == _commandIndex)
+            {
+                _invokator.Stop();
+                _commandIndex = 0;
+                return;
+            }
+
+            try
+            {
+                GetCommand(CommandList[_commandIndex]).ExecuteMethod();
+            }
+            catch (NotIsMoveInCellException exception)
+            {
+                return;   
+            }
+
+            _commandIndex++;
         }
 
         #endregion

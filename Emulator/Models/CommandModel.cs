@@ -53,22 +53,27 @@ namespace Emulator.Models
         public void CommandSelector(CommandName name, int id)
         {
             var range = GenerateRowNumbers(0, id + 2);
+            var list = new List<BaseCombo>
+            {
+                new BaseCombo {Name = "0", Value = 0},
+                new BaseCombo {Name = $"{id + 1}", Value = id + 1}
+            };
 
             switch (name)
             {
                 case CommandName.Move:
                     OneParameterSource = GenerateRowNumbers(1, 100);
-                    TwoParameterSource = range;
+                    TwoParameterSource = list;
                     break;
 
                 case CommandName.Pouring:
                     OneParameterSource = GetColorCellSource();
-                    TwoParameterSource = range;
+                    TwoParameterSource = list;
                     break;
 
                 case CommandName.Rotation:
                     OneParameterSource = GetRouteMoveSource();
-                    TwoParameterSource = range;
+                    TwoParameterSource = list;
                     break;
 
                 case CommandName.Learn:
@@ -85,6 +90,7 @@ namespace Emulator.Models
             OnPropertyChanged(nameof(CurrentOneParameter));
             OnPropertyChanged(nameof(CurrentTwoParameter));
         }
+
         private List<BaseCombo> GetRouteMoveSource()
         {
             return new List<BaseCombo>

@@ -1,12 +1,10 @@
-﻿using System.ComponentModel;
-using RobotObjects.Enumerables;
+﻿using RobotObjects.Enumerables;
 
 namespace Emulator.Models
 {
     /// <summary>
     /// Класс представляющий модель команды заливки ячейки
     /// </summary>
-    [Description("Заливка")]
     public class PouringCellCommandModel
     {
         #region Открытые свойства

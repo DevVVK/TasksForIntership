@@ -17,29 +17,18 @@ namespace RobotObjects.Commands
         private EventHandler<PouringCellEventArgs> _executeEvent;
 
         /// <summary>
-        /// Объект заглушка для взаимной блокировки потоков
-        /// </summary>
-        private readonly object _locker = new object();
-
-        /// <summary>
         /// Событие для обновления объектов эмулятора
         /// </summary>
         public event EventHandler<PouringCellEventArgs> PouringCellEvent
         {
-            add
-            {
-                lock (_locker)
-                {
-                    _executeEvent += value;
-                }
-            }
+            add => _executeEvent += value;
             remove
             {
-                lock (_locker)
+                if (value == null) return;
+                if (_executeEvent != null)
                 {
-                    if (value != null)
-                        _executeEvent -= value;
-
+                    // ReSharper disable once DelegateSubtraction
+                    _executeEvent -= value;
                 }
             }
         }

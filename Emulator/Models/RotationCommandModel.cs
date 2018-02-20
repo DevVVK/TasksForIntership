@@ -1,12 +1,10 @@
-﻿using System.ComponentModel;
-using RobotObjects.Enumerables;
+﻿using RobotObjects.Enumerables;
 
 namespace Emulator.Models
 {
     /// <summary>
     /// Класс представляющий модель команды поворота робота
     /// </summary>
-    [Description("Поворот")]
     public class RotationCommandModel
     {
         #region Открытые свойства

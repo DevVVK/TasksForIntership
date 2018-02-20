@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using RobotObjects.Commands.Base;
 using RobotObjects.Enumerables;
 using RobotObjects.Objects;
@@ -40,8 +39,7 @@ namespace RobotObjects.Commands
         /// <param name="robot">робот находящийся в определенной ячейке</param>
         /// <param name="numberCommandIfBlackColor">номер команды, к которой нужно перейти если цвет ячейки черный</param>
         /// <param name="numberCommandIfWhiteColor">номер команды, к которой нужно перейти если цвет ячейки белый</param>
-        public LearnCellCommand(List<BaseRobotCommand> commandList, Grid grid, Robot robot, 
-            int numberCommandIfBlackColor, int numberCommandIfWhiteColor)
+        public LearnCellCommand(List<BaseRobotCommand> commandList, Grid grid, Robot robot, int numberCommandIfBlackColor, int numberCommandIfWhiteColor)
         {
             Grid = grid;
             Robot = robot;
@@ -84,15 +82,15 @@ namespace RobotObjects.Commands
         /// <param name="beginIndex">индекс начала выполнения списка</param>
         private void InvokeMethods(List<BaseRobotCommand> commandList, int beginIndex)
         {
-            try
+            var index = beginIndex - 1 > 0 ? beginIndex - 1 : 0;
+
+            for (var i = index; i < commandList.Count; i++)
             {
-                var rangeCount = commandList.Count - beginIndex < 0 ? 0 : commandList.Count - beginIndex;
-                commandList.GetRange(beginIndex - 1, rangeCount).ForEach(item => item.ExecuteMethod());
+                commandList[i].ExecuteMethod();
             }
-            catch (StackOverflowException exception)
-            {
-                throw;
-            }
+
+            /*var rangeCount = commandList.Count - beginIndex < 0 ? 0 : commandList.Count - beginIndex;
+            commandList.GetRange(beginIndex - 1, rangeCount).ForEach(item => item.ExecuteMethod());*/
         }
 
         #endregion

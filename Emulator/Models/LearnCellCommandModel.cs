@@ -1,11 +1,8 @@
-﻿using System.ComponentModel;
-
-namespace Emulator.Models
+﻿namespace Emulator.Models
 {
     /// <summary>
     /// Класс представляющий модель команды изучения ячейки 
     /// </summary>
-    [Description("Изучение")]
     public class LearnCellCommandModel
     {
         #region Открытые свойства

@@ -1,11 +1,8 @@
-﻿using System.ComponentModel;
-
-namespace Emulator.Models
+﻿namespace Emulator.Models
 {
     /// <summary>
     /// Класс предсавляющий модель команды движения 
     /// </summary>
-    [Description("Движение")]
     public class MoveCommandModel
     {
         #region Открытые свойства

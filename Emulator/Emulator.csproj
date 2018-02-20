@@ -78,7 +78,6 @@
     <Compile Include="Factories\RobotInitializer.cs" />
     <Compile Include="Interpreters\CommandInterpreter.cs" />
     <Compile Include="Mappers\CommandModelMapper.cs" />
-    <Compile Include="Mappers\ListModelMapper.cs" />
     <Compile Include="Models\CommandModel.cs" />
     <Compile Include="Models\InitializeCommandModel.cs" />
     <Compile Include="Models\LearnCellCommandModel.cs" />

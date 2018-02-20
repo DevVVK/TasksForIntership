@@ -1,11 +1,8 @@
-﻿using System.ComponentModel;
-
-namespace Emulator.Models
+﻿namespace Emulator.Models
 {
     /// <summary>
     /// Класс модели для команды инициализации робота 
     /// </summary>
-    [Description("Инициализация")]
     public class InitializeCommandModel
     {
         #region Открытые свойства
