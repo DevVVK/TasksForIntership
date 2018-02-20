@@ -8,7 +8,15 @@ namespace RobotObjects.Commands.Base
     /// </summary>
     public class BaseRobotCommand
     {
-        #region Защищенные свойства
+        /// <summary>
+        /// Идентификатор команды
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Идентификатор следующей команды
+        /// </summary>
+        public int NextNumberCommand { get; set; }
 
         /// <summary>
         /// Ссылка на вызываемый метод команды
@@ -25,15 +33,9 @@ namespace RobotObjects.Commands.Base
         /// </summary>
         protected Grid Grid { get; set; }
 
-        #endregion
-
-        #region Методы 
-
         /// <summary>
         /// Метод выполнения команды
         /// </summary>
         public void ExecuteMethod() => Execute?.Invoke();
-     
-        #endregion
     }
 } 

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace RobotObjects.Enumerables
+﻿namespace RobotObjects.Enumerables
 {
     /// <summary>
     /// Цвет ячейки сетки, по которой передвигается робот
@@ -10,13 +8,11 @@ namespace RobotObjects.Enumerables
         /// <summary>
         /// Белый цвет
         /// </summary>
-        [Description("Белый")]
         White,
 
         /// <summary>
         /// Черный цвет
         /// </summary>
-        [Description("Черный")]
         Black
     }
 }

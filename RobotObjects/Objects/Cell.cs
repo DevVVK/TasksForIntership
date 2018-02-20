@@ -7,8 +7,6 @@ namespace RobotObjects.Objects
     /// </summary>
     public class Cell
     {
-        #region Открытые свойства
-        
         /// <summary>
         /// Цвет ячейки
         /// </summary>
@@ -18,10 +16,6 @@ namespace RobotObjects.Objects
         /// Проходима ли ячейка
         /// </summary>
         public bool IsMove { get; set; }
-
-        #endregion
-
-        #region Конструкторы
 
         /// <summary>
         /// Конструтор для инициализатора объета
@@ -41,7 +35,5 @@ namespace RobotObjects.Objects
             Color = color;
             IsMove = isMove;
         }
-
-        #endregion
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using Emulator.Commands.Base;
-using Emulator.Interpreters;
+using Emulator.LogicEmulator;
+using Emulator.LogicEmulator.Models;
 using Emulator.Models;
 using Emulator.ViewModels.Base;
 

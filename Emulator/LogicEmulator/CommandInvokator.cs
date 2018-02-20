@@ -5,22 +5,22 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Emulator.Factories;
+using Emulator.LogicEmulator.Models;
 using Emulator.Mappers;
 using Emulator.Models;
 using Emulator.ViewModels.Enumerables;
 using RobotObjects.Commands;
 using RobotObjects.Commands.Base;
-using RobotObjects.EmulationEventArgs;
 using RobotObjects.Exceptions;
 using RobotObjects.Objects;
 using VisibleGrid = System.Windows.Controls.Grid;
 
-namespace Emulator.Interpreters
+namespace Emulator.LogicEmulator
 {
     /// <summary>
     /// Класс представляющий интерпретатор команд
     /// </summary>
-    public class CommandInterpreter
+    public class CommandInvokator
     {
         #region Закрытые поля 
 
@@ -81,6 +81,8 @@ namespace Emulator.Interpreters
         /// </summary>
         public ObservableCollection<CommandModel> CommandList { get; set; }
 
+
+
         #region Конструкторы
 
         /// <summary>
@@ -88,7 +90,7 @@ namespace Emulator.Interpreters
         /// </summary>
         /// <param name="commandList">список команд для отображения в объеты команд</param>
         /// <param name="visibleGrid">отображаемая сетка</param>
-        public CommandInterpreter(VisibleGrid visibleGrid)
+        public CommandInvokator(VisibleGrid visibleGrid)
         {
             _visibleGrid = visibleGrid;
             _commands = new List<BaseRobotCommand>();
@@ -142,7 +144,7 @@ namespace Emulator.Interpreters
         {
             _robot = new Robot { Row = rowPoint, Column = columnPoint };
             _grid = new Grid { RowCount = rowCount, ColumnCount = columnCount, Cells = new Cell[rowCount, columnCount] };
-            var initCommand = new InitializeEmulationCommand(_grid, _robot);
+            var initCommand = new ViewGrid(_grid, _robot);
             _visibleGrid.Children.Clear();
             _manager = new EmulatorManager(_visibleGrid, _grid.Cells, rowCount, columnCount);
             _visibleRobot = _robotInitializer.CreateRobot(Colors.Coral);
@@ -160,50 +162,60 @@ namespace Emulator.Interpreters
         /// <returns></returns>
         private BaseRobotCommand GetCommand(CommandModel source)
         {
-            BaseRobotCommand command = null;
-
             switch ((CommandName)source.CurrentName)
             {
-                case CommandName.Move:
-                    MoveCommandModel moveModel = CommandModelMapper.GetMoveCommandModel(source);
-                    var moveCommand = new MoveRobotCommand(_grid, _robot, moveModel.CellCount);
-                    moveCommand.MoveRobotEvent += MoveCommandOnExecuteEvent;
-                    command = moveCommand;
-                    _commands.Add(command);
+                case CommandName.Move: CreateMoveCommand(CommandModelMapper.GetMoveCommandModel(source)); break;
+                case CommandName.Rotation: CreateRotationCommand(CommandModelMapper.GetRotationCommandModel(source)); break;
+                case CommandName.Pouring: CreatePouringCommand(CommandModelMapper.GetPouringCommandModel(source)); break;
+                case CommandName.Learn: CreateLearnCellCommand(CommandModelMapper.GetLearnCellCommandModel(source)); break;
+            }
+        }
 
-                    break;
+        private void CreateLearnCellCommand(LearnCellCommandModel source)
+        {
+            var learnCellCommand = new LearnCellCommand(_commands, _grid, _robot,
+                source.CommandIdIfCellColorBlack, source.CommandIdIfCellColorWhite)
+            {
+                Id = source.Id
+            };
+        }
 
-                case CommandName.Rotation:
-                    RotationCommandModel rotationModel = CommandModelMapper.GetRotationCommandModel(source);
-                    var rotationCommand = new RotationRobotCommand(_robot, rotationModel.Route);
-                    rotationCommand.RotateRobotEvent += RotationCommandOnRotateRobot;
-                    command = rotationCommand;
-                    _commands.Add(command);
+        private void CreatePouringCommand(PouringCellCommandModel source)
+        {
+            var pouringCommand = new PouringCellCommand(_grid, _robot, source.CellColor)
+            {
+                Id = source.Id,
+                NextNumberCommand = source.NextCommandId
+            };
+        }
 
-                    break;
+        private void CreateRotationCommand(RotationCommandModel source)
+        {
+            var rotationCommand = new RotationRobotCommand(_robot, source.Route)
+            {
+                Id = source.Id,
+                NextNumberCommand = source.NextCommandId
+            };
+        }
 
-                case CommandName.Pouring:
-                    PouringCellCommandModel pouringModel = CommandModelMapper.GetPouringCommandModel(source);
-                    var pouringCommand = new PouringCellCommand(_grid, _robot, pouringModel.CellColor);
-                    pouringCommand.PouringCellEvent += PouringCommandOnPouringCellEvent;
-                    command = pouringCommand;
-                    _commands.Add(command);
+        private List<MoveRobotCommand> CreateMoveCommand(MoveCommandModel source)
+        {
+            var moveCommandList = new List<MoveRobotCommand>();
 
-                    break;
+            for (var i = 0; i < source.CellCount; i++)
+            {
+                var moveCommand = new MoveRobotCommand(_grid, _robot)
+                {
+                    Id = source.Id,
+                    NextNumberCommand = source.NextCommandNumber
+                };
 
-                case CommandName.Learn:
-                    LearnCellCommandModel learnCellModel = CommandModelMapper.GetLearnCellCommandModel(source);
-                    var learnCellCommand = new LearnCellCommand(_commands, _grid, _robot, 
-                        learnCellModel.CommandIdIfCellColorBlack, learnCellModel.CommandIdIfCellColorWhite);
-                    command = learnCellCommand;
-                    _commands.Add(command);
-
-                    break;
+                moveCommandList.Add(moveCommand);
             }
 
-            return command;
+            return moveCommandList;
         }
-       
+
         #endregion
 
         #region Обработчики событий выполнения команд

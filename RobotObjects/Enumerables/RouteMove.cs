@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace RobotObjects.Enumerables
+﻿namespace RobotObjects.Enumerables
 {
     /// <summary>
     /// Направление поворота
@@ -10,13 +8,11 @@ namespace RobotObjects.Enumerables
         /// <summary>
         /// Направление влево
         /// </summary>
-        [Description("Налево")]
         Left, 
 
         /// <summary>
         /// Направление вправо
         /// </summary>
-        [Description("Направо")]
         Right,
 
         /// <summary>

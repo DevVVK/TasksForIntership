@@ -1,6 +1,5 @@
 ﻿using System;
 using RobotObjects.Commands.Base;
-using RobotObjects.EmulationEventArgs;
 using RobotObjects.Enumerables;
 using RobotObjects.Exceptions;
 using RobotObjects.Objects;
@@ -13,56 +12,12 @@ namespace RobotObjects.Commands
     public class MoveRobotCommand : BaseRobotCommand
     {
         /// <summary>
-        /// Событие для обновления объектов эмулятора
-        /// </summary>
-        private EventHandler<MoveRobotEventArgs> _executeEvent;
-
-        /// <summary>
-        /// Событие для обновления объектов эмулятора
-        /// </summary>
-        public event EventHandler<MoveRobotEventArgs> MoveRobotEvent
-        {
-            add => _executeEvent += value;
-            remove
-            {
-                if (value == null) return;
-                if (_executeEvent != null)
-                {
-                    // ReSharper disable once DelegateSubtraction
-                    _executeEvent -= value;
-                }
-            }
-        }
-
-        /// <summary>
-        ///  Метод вызывающий обработчик события
-        /// </summary>
-        private void OnExecuteEvent(object sender, MoveRobotEventArgs e) => _executeEvent?.Invoke(sender, e);
-
-        #region Открытые свойства
-
-
-
-        #endregion
-
-        #region Закрытые поля
-
-        /// <summary>
-        /// Поле для хранения количества клеток, на которое нужно переместить робота
-        /// </summary>
-        private readonly int _cellCount;
-
-        #endregion
-
-        #region Конструкторы
-
-        /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
         /// <param name="grid">сетка, по которой перемещается робот</param>
         /// <param name="robot">робот, которого нужно переместить</param>
         /// <param name="cellCount">количество клеток, на которое нужно переместить робота</param>
-        public MoveRobotCommand(Grid grid, Robot robot, int cellCount)
+        public MoveRobotCommand(Grid grid, Robot robot)
         {
             Grid = grid;
             Robot = robot;
@@ -71,10 +26,6 @@ namespace RobotObjects.Commands
             Execute = Move;
         }
 
-        #endregion
-
-        #region Методы
-
         /// <summary>
         /// Метод для перемещения робота по указанному направлению
         /// </summary>
@@ -82,10 +33,10 @@ namespace RobotObjects.Commands
         {
             switch (Robot.RouteMove)
             {
-                case RouteMove.Right: UpdateMove(Grid.Cells, Robot, _cellCount, () => Robot.Column++); break;
-                case RouteMove.Top: UpdateMove(Grid.Cells, Robot, _cellCount, () => Robot.Row--); break;
-                case RouteMove.Left: UpdateMove(Grid.Cells, Robot, _cellCount, () => Robot.Column--); break;
-                case RouteMove.Bottom: UpdateMove(Grid.Cells, Robot, _cellCount, () => Robot.Row++); break;
+                case RouteMove.Right: UpdateMove(Grid.Cells, Robot, () => Robot.Column++); break;
+                case RouteMove.Top: UpdateMove(Grid.Cells, Robot, () => Robot.Row--); break;
+                case RouteMove.Left: UpdateMove(Grid.Cells, Robot, () => Robot.Column--); break;
+                case RouteMove.Bottom: UpdateMove(Grid.Cells, Robot, () => Robot.Row++); break;
             }
         }
 
@@ -96,14 +47,10 @@ namespace RobotObjects.Commands
         /// <param name="robot">робот</param>
         /// <param name="cellCount">количество ячеек, на которое нужно переместить робота</param>
         /// <param name="iteration">метод изменения индекса строки или столбца</param>
-        private void UpdateMove(Cell[,] cells, Robot robot, int cellCount, Action iteration)
+        private void UpdateMove(Cell[,] cells, Robot robot, Action iteration)
         {
-            for (var index = 0; index < cellCount; index++)
-            {
-                CheckCellOnMove(cells, robot);
-                iteration?.Invoke();
-                OnExecuteEvent(this, new MoveRobotEventArgs(Robot.Row, Robot.Column));
-            }
+            CheckCellOnMove(cells, robot);
+            iteration?.Invoke();
         }
 
         /// <summary>
@@ -133,7 +80,5 @@ namespace RobotObjects.Commands
         {
             if (!cells[row, column].IsMove) throw new NotIsMoveInCellException();
         }
-
-        #endregion
     }
 }

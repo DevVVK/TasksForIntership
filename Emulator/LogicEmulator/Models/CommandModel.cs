@@ -6,7 +6,7 @@ using Emulator.ViewModels.Enumerables;
 using Emulator.ViewModels.ModelsForView;
 using RobotObjects.Enumerables;
 
-namespace Emulator.Models
+namespace Emulator.LogicEmulator.Models
 {
     /// <summary>
     /// Модель для интерфейса команд

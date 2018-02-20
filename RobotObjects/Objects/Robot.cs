@@ -8,27 +8,38 @@ namespace RobotObjects.Objects
     /// </summary>
     public class Robot : BaseMove
     {
-        #region Конструкторы
+        /// <summary>
+        /// Индекс строки для перемещения
+        /// </summary>
+        public int Row { get; set; }
 
         /// <summary>
-        /// Конструктор по умолчанию для инициализатора объектов
+        /// Индекс столбца для перемещения
+        /// </summary>
+        public int Column { get; set; }
+
+        /// <summary>
+        /// Направление движения
+        /// </summary>
+        public RouteMove RouteMove { get; set; }
+
+        /// <summary>
+        /// Конструктор для инициализатора объектов
         /// </summary>
         public Robot()
         {
-            RouteMove = RouteMove.Right;
-        } 
+        }
 
         /// <summary>
         /// Конструктор по умолчанию 
         /// </summary>
         /// <param name="row">начальное положение робота(индекс строки)</param>
         /// <param name="column">начальное положение робота(индекс столбца)</param>
-        public Robot(int row, int column) : this()
+        public Robot(int row, int column, RouteMove route)
         {
             Row = row;
             Column = column;
+            RouteMove = route;
         }
-
-        #endregion
     }
 }

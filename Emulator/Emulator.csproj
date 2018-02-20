@@ -74,18 +74,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AttributeLogic\AttributeManager.cs" />
-    <Compile Include="Factories\EmulatorManager.cs" />
-    <Compile Include="Factories\RobotInitializer.cs" />
-    <Compile Include="Interpreters\CommandInterpreter.cs" />
-    <Compile Include="Mappers\CommandModelMapper.cs" />
-    <Compile Include="Models\CommandModel.cs" />
-    <Compile Include="Models\InitializeCommandModel.cs" />
-    <Compile Include="Models\LearnCellCommandModel.cs" />
-    <Compile Include="Models\MoveCommandModel.cs" />
-    <Compile Include="Models\PouringCellCommandModel.cs" />
-    <Compile Include="Models\RotationCommandModel.cs" />
+    <Compile Include="LogicEmulator\EmulatorManager.cs" />
+    <Compile Include="LogicEmulator\RobotInitializer.cs" />
+    <Compile Include="LogicEmulator\CommandInvokator.cs" />
+    <Compile Include="LogicEmulator\CommandInterpreter.cs" />
+    <Compile Include="LogicEmulator\ViewGrid.cs" />
+    <Compile Include="LogicEmulator\Models\CommandModel.cs" />
     <Compile Include="ViewModels\CommandListManagerViewModel.cs" />
-    <Compile Include="Commands\Base\BaseCommandRelay.cs" />
+    <Compile Include="ViewModels\Commands\Base\BaseCommandRelay.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Enumerables\CommandName.cs" />
     <Compile Include="ViewModels\FileManagerViewModel.cs" />

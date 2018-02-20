@@ -1,6 +1,5 @@
 ﻿using System;
 using RobotObjects.Commands.Base;
-using RobotObjects.EmulationEventArgs;
 using RobotObjects.Enumerables;
 using RobotObjects.Objects;
 
@@ -12,42 +11,9 @@ namespace RobotObjects.Commands
     public class RotationRobotCommand : BaseRobotCommand 
     {
         /// <summary>
-        /// Событие для обновления объектов эмулятора
-        /// </summary>
-        private EventHandler<RotationRobotEventArgs> _executeEvent;
-
-        /// <summary>
-        /// Событие для обновления объектов эмулятора
-        /// </summary>
-        public event EventHandler<RotationRobotEventArgs> RotateRobotEvent
-        {
-            add => _executeEvent += value;
-            remove
-            {
-                if (value == null) return;
-                if (_executeEvent != null)
-                {
-                    // ReSharper disable once DelegateSubtraction
-                    _executeEvent -= value;
-                }
-            }
-        }
-
-        /// <summary>
-        ///  Метод вызывающий обработчик события
-        /// </summary>
-        private void OnExecuteEvent(object sender, RotationRobotEventArgs e) => _executeEvent?.Invoke(sender, e);
-
-        #region Закрытые поля
-
-        /// <summary>
         /// Направление движения робота
         /// </summary>
         private readonly RouteMove _routeRobot; 
-        
-        #endregion
-
-        #region Конструкторы
 
         /// <summary>
         /// Конструктор по умолчанию
@@ -60,10 +26,6 @@ namespace RobotObjects.Commands
             _routeRobot = routeRobot;
             Execute = UpdateRoute;
         }
-
-        #endregion
-
-        #region Методы
 
         /// <summary>
         /// Метод изменяющий направление движения направление движения
@@ -105,13 +67,6 @@ namespace RobotObjects.Commands
         /// </summary>
         /// <param name="robot">робот</param>
         /// <param name="route">направление</param>
-        private void Update(Robot robot, RouteMove route)
-        {
-            robot.RouteMove = route;
-            OnExecuteEvent(this, new RotationRobotEventArgs(robot.RouteMove));
-        }
-
-        #endregion
-
+        private void Update(Robot robot, RouteMove route) => robot.RouteMove = route;
     }
 }

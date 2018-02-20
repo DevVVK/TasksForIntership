@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Emulator.Commands.Base;
-using Emulator.Interpreters;
+using Emulator.LogicEmulator;
 using Emulator.ViewModels.Base;
 using Emulator.ViewModels.ModelsForView;
 

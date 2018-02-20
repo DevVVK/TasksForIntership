@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace Emulator.Factories
+namespace Emulator.LogicEmulator
 {
     /// <summary>
     /// Класс представляющий инициализатор робота

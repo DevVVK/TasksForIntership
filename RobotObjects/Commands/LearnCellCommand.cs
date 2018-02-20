@@ -10,8 +10,6 @@ namespace RobotObjects.Commands
     /// </summary>
     public class LearnCellCommand : BaseRobotCommand
     {
-        #region Закрытые поля
-
         /// <summary>
         /// Номер команды если цвет ячейки черный
         /// </summary>
@@ -26,10 +24,6 @@ namespace RobotObjects.Commands
         /// Список выполняемых команд
         /// </summary>
         private readonly List<BaseRobotCommand> _commandList;
-
-        #endregion
-
-        #region Конструкторы
 
         /// <summary>
         /// Конструктор по умолчанию
@@ -50,11 +44,7 @@ namespace RobotObjects.Commands
 
             Execute = LearnCell;
         }
-
-        #endregion
-
-        #region Методы
-
+        
         /// <summary>
         /// Изучает ячейку на предмет цвета и выполняет список команд с заданного индекса
         /// </summary>
@@ -88,11 +78,6 @@ namespace RobotObjects.Commands
             {
                 commandList[i].ExecuteMethod();
             }
-
-            /*var rangeCount = commandList.Count - beginIndex < 0 ? 0 : commandList.Count - beginIndex;
-            commandList.GetRange(beginIndex - 1, rangeCount).ForEach(item => item.ExecuteMethod());*/
         }
-
-        #endregion
     }
 }

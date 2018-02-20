@@ -1,6 +1,4 @@
-﻿using System;
-using RobotObjects.Commands.Base;
-using RobotObjects.EmulationEventArgs;
+﻿using RobotObjects.Commands.Base;
 using RobotObjects.Enumerables;
 using RobotObjects.Objects;
 
@@ -12,42 +10,9 @@ namespace RobotObjects.Commands
     public class PouringCellCommand : BaseRobotCommand
     {
         /// <summary>
-        /// Событие для обновления объектов эмулятора
-        /// </summary>
-        private EventHandler<PouringCellEventArgs> _executeEvent;
-
-        /// <summary>
-        /// Событие для обновления объектов эмулятора
-        /// </summary>
-        public event EventHandler<PouringCellEventArgs> PouringCellEvent
-        {
-            add => _executeEvent += value;
-            remove
-            {
-                if (value == null) return;
-                if (_executeEvent != null)
-                {
-                    // ReSharper disable once DelegateSubtraction
-                    _executeEvent -= value;
-                }
-            }
-        }
-
-        /// <summary>
-        ///  Метод вызывающий обработчик события
-        /// </summary>
-        private void OnExecuteEvent(object sender, PouringCellEventArgs e) => _executeEvent?.Invoke(sender, e);
-
-        #region Закрытые поля
-
-        /// <summary>
         /// Цвет заливки ячейки, в которой находится робот
         /// </summary>
         private readonly ColorCell _pouringColor;
-
-        #endregion
-
-        #region Конструкторы
 
         /// <summary>
         /// Конструктор по умолчанию
@@ -63,10 +28,6 @@ namespace RobotObjects.Commands
             Execute = PouringCell;
         }
 
-        #endregion
-
-        #region Методы 
-
         /// <summary>
         /// Метод изменяющий цвет ячейки, на которой находится робот
         /// </summary>
@@ -79,9 +40,6 @@ namespace RobotObjects.Commands
             
             //изменение цвета
             cell.Color = _pouringColor;
-            OnExecuteEvent(this, new PouringCellEventArgs(Robot.Row, Robot.Column, cell.Color));
         }
-
-        #endregion
     }
 }
